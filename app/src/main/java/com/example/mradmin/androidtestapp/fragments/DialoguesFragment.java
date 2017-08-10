@@ -62,16 +62,16 @@ import com.example.mradmin.androidtestapp.activities.MessagingActivity;
     }
 }*/
 
-public class DialoguesFragment extends Fragment{
+public class DialoguesFragment extends Fragment {
 
-    private String title="";
+    private String title = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_dialogues, container, false);
 
-        final ListView listView =(ListView)rootView.findViewById(R.id.dialoguesListView);
+        final ListView listView = (ListView) rootView.findViewById(R.id.dialoguesListView);
 
         DialogueAdapter dialogueAdapter = new DialogueAdapter(getActivity(),
                 R.layout.dialogue_row_layout);
@@ -116,7 +116,7 @@ public class DialoguesFragment extends Fragment{
             TextView textViewMessage = (TextView) convertView.findViewById(R.id.textViewMessage);
             TextView textViewMessageTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
 
-            title=textViewName.getText().toString();
+            title = textViewName.getText().toString();
 
             return convertView;
         }
