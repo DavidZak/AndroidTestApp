@@ -47,6 +47,8 @@ public class SignInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nested_scroll_view_sign_in);
+
         textInputLayoutEmail = (TextInputLayout) view.findViewById(R.id.emailTextView);
         textInputLayoutPassword = (TextInputLayout) view.findViewById(R.id.passwordTextView);
 
