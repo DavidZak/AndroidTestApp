@@ -2,6 +2,7 @@ package com.example.mradmin.androidtestapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.mradmin.androidtestapp.InputValidation;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.entities.User;
 
@@ -19,17 +21,19 @@ import com.example.mradmin.androidtestapp.entities.User;
 
 public class MessagingActivity extends AppCompatActivity {
 
-    boolean messageFieldNotEmpty = false;
+    private InputValidation inputValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
+        inputValidation = new InputValidation(MessagingActivity.this);
+
         String title = getIntent().getStringExtra("title").toString(); // Now, message has Drawer title
         setTitle(title);
 
-        final EditText editTextMessage = (EditText) findViewById(R.id.messageTextInput);
+        final TextInputEditText editTextMessage = (TextInputEditText) findViewById(R.id.messageTextInput);
 
         final ImageButton buttonSendMessage = (ImageButton) findViewById(R.id.button_send_message);
         final ImageButton buttonAttachFile = (ImageButton) findViewById(R.id.button_attach_file);
@@ -37,6 +41,7 @@ public class MessagingActivity extends AppCompatActivity {
         buttonSendMessage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("send message");
+
             }
         });
 
@@ -48,26 +53,22 @@ public class MessagingActivity extends AppCompatActivity {
         });
 
         editTextMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            public void afterTextChanged(Editable s) {
             }
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    messageFieldNotEmpty = true;
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (inputValidation.isInputEditTextFilled(editTextMessage, null, "azaz")){
                     buttonSendMessage.setEnabled(true);
-                    buttonAttachFile.setEnabled(false);
-
-                } else {
-                    messageFieldNotEmpty = false;
+                } else
                     buttonSendMessage.setEnabled(false);
-                    buttonAttachFile.setEnabled(true);
-                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

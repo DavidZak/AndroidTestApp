@@ -40,18 +40,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_attach_file_24dp"
-                android:backgroundTint="@color/colorButtonEnabled"
+                android:backgroundTint="@color/colorIcon"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="8dp" />
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/messageTextInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorTextSecond"
                 android:layout_weight="1"
                 android:inputType="text"
-                android:backgroundTint="@color/colorBackgroundLight"
+                android:backgroundTint="@color/colorIcon"
+                android:hint="Input message"
+                android:textColorHint="@color/colorTextSecond"
                 />
 
             <ImageButton

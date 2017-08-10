@@ -36,11 +36,13 @@ public class InputValidation {
     public boolean isInputEditTextFilled(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message) {
         String value = textInputEditText.getText().toString().trim();
         if (value.isEmpty()) {
-            textInputLayout.setError(message);
+            if (textInputLayout != null)
+                textInputLayout.setError(message);
             hideKeyboardFrom(textInputEditText);
             return false;
         } else {
-            textInputLayout.setErrorEnabled(false);
+            if (textInputLayout != null)
+                textInputLayout.setErrorEnabled(false);
         }
 
         return true;
