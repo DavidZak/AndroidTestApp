@@ -3,7 +3,12 @@ package com.example.mradmin.androidtestapp.fragments.firstActivityFragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.AppCompatButton;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,11 +17,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.mradmin.androidtestapp.activities.MessagingActivity;
-import com.example.mradmin.androidtestapp.db.DBHelper;
+import com.example.mradmin.androidtestapp.InputValidation;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.example.mradmin.androidtestapp.R;
-import com.example.mradmin.androidtestapp.db.UserDBHelper;
+import com.example.mradmin.androidtestapp.db.DBHelper;
 import com.example.mradmin.androidtestapp.entities.User;
 
 /**
@@ -25,98 +29,81 @@ import com.example.mradmin.androidtestapp.entities.User;
 
 public class SignInFragment extends Fragment {
 
-    UserDBHelper dbHelper;
+    InputValidation inputValidation;
+    private DBHelper databaseHelper;
 
-    boolean mailNotEmpty = false;
-    boolean passwordNotEmpty = false;
+    private Button button;
 
-    private String userName = "";
+    private NestedScrollView nestedScrollView;
+
+    private TextInputLayout textInputLayoutEmail;
+    private TextInputLayout textInputLayoutPassword;
+
+    private TextInputEditText editTextEmail;
+    private TextInputEditText editTextPassword;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
-        dbHelper = new UserDBHelper(this.getContext());
-        dbHelper.insertUser("davo zak","dav","zak");
+        textInputLayoutEmail = (TextInputLayout) view.findViewById(R.id.emailTextView);
+        textInputLayoutPassword = (TextInputLayout) view.findViewById(R.id.passwordTextView);
 
-        final EditText editTextMail = (EditText) view.findViewById(R.id.messageEditText);
-        final EditText editTextPassword = (EditText) view.findViewById(R.id.messageEditTextPassword);
+        editTextEmail = (TextInputEditText) view.findViewById(R.id.messageEditText);
+        editTextPassword = (TextInputEditText) view.findViewById(R.id.messageEditTextPassword);
 
-        final Button button = (Button) view.findViewById(R.id.loginButton);
+        inputValidation = new InputValidation(getContext());
+        databaseHelper = new DBHelper(getContext());
+
+        button = (Button) view.findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("click");
 
-                User user = dbHelper.getUserByEmail(editTextMail.getText().toString());
-                if (user!=null) {
-                    if (user.getPassword().equals(editTextPassword.getText().toString())) {
-                        System.out.println("ok");
+                verifyFromSQLite();
 
-                        userName = user.getFullName();
-
-                        Intent intent = new Intent(getContext(), NavigationActivity.class);
-                        intent.putExtra("username", userName);
-                        startActivity(intent);
-
-                        //startActivity(new Intent(getContext(), NavigationActivity.class));
-                    } else {
-                        System.out.println("password wrong");
-                    }
-                } else {
-                    System.out.println("not ok");
-                }
-
-            }
-        });
-
-        editTextMail.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    mailNotEmpty = true;
-                    if (passwordNotEmpty) {
-                        button.setEnabled(true);
-                    }
-                } else {
-                    mailNotEmpty = false;
-                    button.setEnabled(false);
-                }
-            }
-        });
-
-        editTextPassword.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-
-                if (s.length() != 0) {
-                    passwordNotEmpty = true;
-                    if (mailNotEmpty) {
-                        button.setEnabled(true);
-                    }
-                } else {
-                    passwordNotEmpty = false;
-                    button.setEnabled(false);
-                }
             }
         });
 
         return view;
+    }
+
+    /**
+     * This method is to validate the input text fields and verify login credentials from SQLite
+     */
+    private void verifyFromSQLite() {
+        if (!inputValidation.isInputEditTextFilled(editTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextEmail(editTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextFilled(editTextPassword, textInputLayoutPassword, getString(R.string.error_message_email))) {
+            return;
+        }
+
+        if (databaseHelper.checkUser(editTextEmail.getText().toString().trim()
+                , editTextPassword.getText().toString().trim())) {
+
+
+            Intent accountsIntent = new Intent(getActivity(), NavigationActivity.class);
+            accountsIntent.putExtra("username", editTextEmail.getText().toString().trim());
+            emptyInputEditText();
+            startActivity(accountsIntent);
+
+
+        } else {
+            // Snack Bar to show success message that record is wrong
+            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * This method is to empty all input edit text
+     */
+    private void emptyInputEditText() {
+        editTextEmail.setText(null);
+        editTextPassword.setText(null);
     }
 }

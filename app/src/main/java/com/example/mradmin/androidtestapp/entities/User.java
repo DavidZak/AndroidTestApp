@@ -6,10 +6,18 @@ package com.example.mradmin.androidtestapp.entities;
 
 public class User {
 
+    private int id;
     private String name;
-    private String surName;
     private String email;
     private String password;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -17,14 +25,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurName() {
-        return surName;
-    }
-
-    public void setSurName(String surName) {
-        this.surName = surName;
     }
 
     public String getEmail() {
@@ -47,14 +47,9 @@ public class User {
     public User() {
     }
 
-    public User(String name, String surName, String email, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
-        this.surName = surName;
         this.email = email;
         this.password = password;
-    }
-
-    public String getFullName(){
-        return name + " " + surName;
     }
 }

@@ -1,4 +1,5 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorBackground"
-    tools:context="com.example.mradmin.androidtestapp.activities.FirstActivity">
+    tools:context="com.example.mradmin.androidtestapp.activities.FirstActivity"
+    android:id="@+id/scroll_view_sign_up">
 
     <LinearLayout
         android:id="@+id/linearLayoutBossSignUp"
@@ -17,155 +19,83 @@
         android:gravity="top"
         android:layout_marginTop="8dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutNameSignUp"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="@color/colorTextSecond">
 
-            <TextView
-                android:id="@+id/textViewNameSignUp"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="name"
+                android:hint="@string/hint_name"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textColor="@color/colorTextSecond"
-                android:padding="2dp"/>
-
-            <EditText
-                android:id="@+id/messageEditTextNameSignUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecond"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:inputType="textEmailAddress"
-                android:backgroundTint="@color/colorBackgroundLight"
+                android:backgroundTint="@color/colorIcon"
                 android:drawableRight="@drawable/ic_perm_identity_24dp"
-                android:drawablePadding="8dp"
                 android:drawableTint="@color/colorIcon"/>
+        </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutSurNameSignUp"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="@color/colorTextSecond">
 
-            <TextView
-                android:id="@+id/textViewSurNameSignUp"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="surname"
-                android:textColor="@color/colorTextSecond"
-                android:padding="2dp"/>
-
-            <EditText
-                android:id="@+id/messageEditTextSurNameSignUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecond"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
-                android:backgroundTint="@color/colorBackgroundLight"
+                android:maxLines="1"
+                android:textColor="@color/colorTextSecond"
+                android:backgroundTint="@color/colorIcon"
                 android:drawableRight="@drawable/ic_perm_identity_24dp"
-                android:drawablePadding="8dp"
                 android:drawableTint="@color/colorIcon"/>
+        </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutMailSignUp"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="@color/colorTextSecond"
+            app:passwordToggleTint="@color/colorIcon">
 
-            <TextView
-                android:id="@+id/textViewMailSignUp"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="email"
-                android:textColor="@color/colorTextSecond"
-                android:padding="2dp"/>
-
-            <EditText
-                android:id="@+id/messageEditTextMailSignUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecond"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:inputType="textEmailAddress"
-                android:backgroundTint="@color/colorBackgroundLight"
-                android:drawableRight="@drawable/ic_perm_identity_24dp"
-                android:drawablePadding="8dp"
-                android:drawableTint="@color/colorIcon"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutPasswordSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
-
-            <TextView
-                android:id="@+id/passwordTextViewSignUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="password"
-                android:textColor="@color/colorTextSecond"
-                android:padding="2dp"/>
-
-            <EditText
-                android:id="@+id/messageEditTextPasswordSignUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecond"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:backgroundTint="@color/colorIcon"
+                android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:backgroundTint="@color/colorBackgroundLight"
-                android:drawableRight="@drawable/ic_lock_outline_24dp"
-                android:drawablePadding="8dp"
-                android:drawableTint="@color/colorIcon" />
+                android:maxLines="1"
+                android:textColor="@color/colorTextSecond" />
+        </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutPasswordCopySignUp"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="@color/colorTextSecond"
+            app:passwordToggleTint="@color/colorIcon">
 
-            <TextView
-                android:id="@+id/passwordTextViewCopySignUp"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="repeat password"
-                android:textColor="@color/colorTextSecond"
-                android:padding="2dp"/>
-
-            <EditText
-                android:id="@+id/messageEditTextPasswordCopySignUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecond"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:backgroundTint="@color/colorIcon"
+                android:hint="@string/hint_confirm_password"
                 android:inputType="textPassword"
-                android:backgroundTint="@color/colorBackgroundLight"
-                android:drawableRight="@drawable/ic_lock_outline_24dp"
-                android:drawablePadding="8dp"
-                android:drawableTint="@color/colorIcon" />
-
-        </LinearLayout>
+                android:maxLines="1"
+                android:textColor="@color/colorTextSecond" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/loginButtonSignUp"
@@ -176,13 +106,13 @@
             android:background="@drawable/button_login"
             android:drawableRight="@drawable/ic_arrow_forward_24dp"
             android:drawableTint="@color/colorTextFirst"
-            android:enabled="false"
+            android:enabled="true"
             android:paddingLeft="20dp"
             android:text="SIGN UP"
             android:textColor="@color/colorTextFirst" />
 
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
 
 
