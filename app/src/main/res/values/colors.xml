@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#394865</color>
+    <color name="colorPrimaryDark">#394865</color>
+    <color name="colorPrimaryLight">#FE636C</color>
+    <color name="colorAccent">#5E7192</color>
+
+    <color name="colorTextFirst">#FFFFFF</color>
+    <color name="colorTextSecond">#9EADC4</color>
+    <color name="colorIcon">#9EADC4</color>
+
+    <color name="colorBackground">#394865</color>
+    <color name="colorBackgroundLight">#5e7192</color>
+    <color name="colorButtonEnabled">#fe636c</color>
+    <color name="colorButtonDisabled">#5E7192</color>
+    <color name="spray">#83CCCD</color>
+    <color name="kournikova">#F8D255</color>
+
+</resources>

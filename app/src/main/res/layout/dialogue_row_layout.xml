@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/imageViewDialogueImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@id/imageViewDialogueImage"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/textViewDialogueName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageViewDialogueImage"
+            android:text="David Zakharyan"
+            android:layout_weight="1"
+            android:textColor="@color/colorTextFirst"/>
+
+        <TextView
+            android:id="@+id/textViewMessageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textViewDialogueName"
+            android:layout_alignParentRight="true"
+            android:text="11:23"
+            android:textColor="@color/colorTextSecond"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageViewDialogueImage"
+        android:layout_toRightOf="@id/imageViewDialogueImage"
+        android:text="tunca"
+        android:textColor="@color/colorTextSecond"
+        android:layout_margin="5dp"/>
+
+</RelativeLayout>
