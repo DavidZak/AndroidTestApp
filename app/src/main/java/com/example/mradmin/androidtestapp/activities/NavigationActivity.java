@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mradmin.androidtestapp.Constants;
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.entities.User;
@@ -63,7 +64,7 @@ public class NavigationActivity extends AppCompatActivity
         //for header name text
         View hView = navigationView.getHeaderView(0);
         TextView nav_user = (TextView) hView.findViewById(R.id.nav_avatar_name);
-        nav_user.setText(getIntent().getStringExtra("username"));
+        nav_user.setText(Constants.USER_EMAIL);
 
         //for log out button
         ImageButton logOutButton = (ImageButton) hView.findViewById(R.id.button_log_out);

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.activities.MessagingActivity;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by mrAdmin on 10.08.2017.
  */
@@ -70,7 +72,7 @@ public class ContactsFragment extends Fragment {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_row_layout, parent, false);
             }
 
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.imageViewContactImage);
+            TextView imageView = (TextView) convertView.findViewById(R.id.imageViewContactImage);
             TextView textViewName = (TextView) convertView.findViewById(R.id.textViewContactName);
             TextView textViewMessageTime = (TextView) convertView.findViewById(R.id.textViewContactMessageTime);
 
