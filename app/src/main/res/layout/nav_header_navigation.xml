@@ -23,8 +23,7 @@
             android:layout_height="50dp"
             android:padding="8dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/logo_unitem"
-            android:background="@drawable/image_avatar_stroke"/>
+            app:srcCompat="@drawable/logo_unitem" />
 
         <View
             android:layout_width="match_parent"

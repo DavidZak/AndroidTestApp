@@ -17,11 +17,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.InputValidation;
+import com.example.mradmin.androidtestapp.activities.FirstActivity;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.db.DBHelper;
 import com.example.mradmin.androidtestapp.entities.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 /**
  * Created by mrAdmin on 08.08.2017.
@@ -29,8 +33,10 @@ import com.example.mradmin.androidtestapp.entities.User;
 
 public class SignInFragment extends Fragment {
 
-    InputValidation inputValidation;
-    private DBHelper databaseHelper;
+    FirebaseAuth firebaseAuth;
+
+    private InputValidation inputValidation;
+    //private DBHelper databaseHelper;
 
     private Button button;
 
@@ -56,7 +62,10 @@ public class SignInFragment extends Fragment {
         editTextPassword = (TextInputEditText) view.findViewById(R.id.messageEditTextPassword);
 
         inputValidation = new InputValidation(getContext());
-        databaseHelper = new DBHelper(getContext());
+        //databaseHelper = new DBHelper(getContext());
+
+        firebaseAuth = ((FirebaseApplication)getActivity().getApplication()).getFirebaseAuth();
+        ((FirebaseApplication)getActivity().getApplication()).checkUserLogin(getActivity());
 
         button = (Button) view.findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -85,20 +94,21 @@ public class SignInFragment extends Fragment {
             return;
         }
 
-        if (databaseHelper.checkUser(editTextEmail.getText().toString().trim()
-                , editTextPassword.getText().toString().trim())) {
+        //if (databaseHelper.checkUser(editTextEmail.getText().toString().trim()
+        //        , editTextPassword.getText().toString().trim())) {
+
+        //
+            ((FirebaseApplication) getActivity().getApplication()).loginUser(getContext(), editTextEmail.getText().toString(), editTextPassword.getText().toString());
 
 
-            Intent accountsIntent = new Intent(getActivity(), NavigationActivity.class);
-            accountsIntent.putExtra("username", editTextEmail.getText().toString().trim());
+            //Intent accountsIntent = new Intent(getActivity(), NavigationActivity.class);
+            //accountsIntent.putExtra("username", editTextEmail.getText().toString().trim());
             emptyInputEditText();
-            startActivity(accountsIntent);
-
-
-        } else {
+            //startActivity(accountsIntent);
+        //} else {
             // Snack Bar to show success message that record is wrong
-            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
-        }
+          //  Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+        //}
     }
 
     /**

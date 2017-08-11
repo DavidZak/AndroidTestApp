@@ -16,17 +16,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.InputValidation;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.db.DBHelper;
 import com.example.mradmin.androidtestapp.entities.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by mrAdmin on 08.08.2017.
  */
 
 public class SignUpFragment extends Fragment {
+
+    private FirebaseAuth firebaseAuth;
 
     private NestedScrollView nestedScrollView;
 
@@ -43,7 +47,7 @@ public class SignUpFragment extends Fragment {
     private Button buttonSignUp;
 
     private InputValidation inputValidation;
-    private DBHelper databaseHelper;
+    //private DBHelper databaseHelper;
 
     private User user;
 
@@ -54,7 +58,7 @@ public class SignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         inputValidation = new InputValidation(getActivity());
-        databaseHelper = new DBHelper(getActivity());
+        //databaseHelper = new DBHelper(getActivity());
         user = new User();
 
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.scroll_view_sign_up);
@@ -68,6 +72,8 @@ public class SignUpFragment extends Fragment {
         textInputEditTextEmail = (TextInputEditText) view.findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = (TextInputEditText) view.findViewById(R.id.textInputEditTextPassword);
         textInputEditTextConfirmPassword = (TextInputEditText) view.findViewById(R.id.textInputEditTextConfirmPassword);
+
+        firebaseAuth = ((FirebaseApplication)getActivity().getApplication()).getFirebaseAuth();
 
         buttonSignUp = (Button) view.findViewById(R.id.loginButtonSignUp);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
@@ -99,21 +105,24 @@ public class SignUpFragment extends Fragment {
             return;
         }
 
-        if (!databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim())) {
+        //if (!databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim())) {
+        //if (((FirebaseApplication)getActivity().getApplication()).checkUserLogin(getContext())) {
 
-            user.setName(textInputEditTextName.getText().toString().trim());
-            user.setEmail(textInputEditTextEmail.getText().toString().trim());
-            user.setPassword(textInputEditTextPassword.getText().toString().trim());
+            ((FirebaseApplication) getActivity().getApplication()).addNewUser(getContext(), textInputEditTextEmail.getText().toString(), textInputEditTextPassword.getText().toString());
 
-            databaseHelper.addUser(user);
+        //    user.setName(textInputEditTextName.getText().toString().trim());
+        //    user.setEmail(textInputEditTextEmail.getText().toString().trim());
+        //    user.setPassword(textInputEditTextPassword.getText().toString().trim());
+
+            //databaseHelper.addUser(user);
 
             // Snack Bar to show success message that record saved successfully
-            Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+        //    Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
             emptyInputEditText();
-        } else {
+        //} else {
             // Snack Bar to show error message that record already exists
-            Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
-        }
+        //    Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+        //}
     }
 
     /**

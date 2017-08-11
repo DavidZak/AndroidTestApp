@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.entities.User;
 import com.example.mradmin.androidtestapp.fragments.ContactsFragment;
@@ -69,6 +70,8 @@ public class NavigationActivity extends AppCompatActivity
         logOutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("------- log out -------");
+
+                ((FirebaseApplication)getApplication()).getFirebaseAuth().signOut();
                 startActivity(new Intent(NavigationActivity.this, FirstActivity.class));
             }
         });

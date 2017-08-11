@@ -10,5 +10,5 @@
         android:top="4dp"
         android:bottom="4dp"/>
 
-    <solid android:color="@color/bubble1" />
+    <solid android:color="@color/bubble2" />
 </shape>
