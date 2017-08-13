@@ -3,15 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke
         android:width="2dp"
-        android:color="@color/colorButtonEnabled" />
+        android:color="@color/colorButtonDisabled" />
     <corners
-        android:radius="50dp"/>
+        android:radius="5dp"/>
 
     <padding
         android:left="2dp"
         android:right="2dp"
         android:top="2dp"
         android:bottom="2dp"/>
-
-    <solid android:color="@color/colorButtonEnabled" />
 </shape>

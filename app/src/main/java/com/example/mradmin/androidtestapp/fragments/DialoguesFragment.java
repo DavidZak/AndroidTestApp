@@ -111,7 +111,7 @@ public class DialoguesFragment extends Fragment {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.dialogue_row_layout, parent, false);
             }
 
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.imageViewDialogueImage);
+            TextView imageView = (TextView) convertView.findViewById(R.id.imageViewDialogueImage);
             TextView textViewName = (TextView) convertView.findViewById(R.id.textViewDialogueName);
             TextView textViewMessage = (TextView) convertView.findViewById(R.id.textViewMessage);
             TextView textViewMessageTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);

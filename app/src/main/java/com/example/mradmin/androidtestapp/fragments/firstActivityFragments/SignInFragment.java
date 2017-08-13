@@ -61,7 +61,7 @@ public class SignInFragment extends Fragment {
     public static final int RC_SIGN_IN = 1;
 
     FirebaseAuth firebaseAuth;
-    //DatabaseReference usersDB;
+    DatabaseReference userDB;
 
     private InputValidation inputValidation;
     //private DBHelper databaseHelper;
@@ -95,8 +95,8 @@ public class SignInFragment extends Fragment {
         //databaseHelper = new DBHelper(getContext());
 
         firebaseAuth = ((FirebaseApplication) getActivity().getApplication()).getFirebaseAuth();
-        //usersDB = ((FirebaseApplication)getActivity().getApplication()).getFirebaseDatabase();
         ((FirebaseApplication) getActivity().getApplication()).checkUserLogin(getActivity());
+        userDB = ((FirebaseApplication)getActivity().getApplication()).getFirebaseDatabase();
 
         //Goole sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -165,9 +165,6 @@ public class SignInFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
@@ -180,7 +177,7 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         //Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -189,53 +186,24 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "signInWithCredential:success");
 
-                            //Intent navigationIntent = new Intent(getActivity(), NavigationActivity.class);
-                            //startActivity(navigationIntent);
+                            ((FirebaseApplication)getActivity().getApplication()).addInfoInDatabase(acct.getDisplayName(), "default", "Hi there, I'm using ...");
+
                             System.out.println("good");
                             checkUserExist();
-
                         } else {
-                            // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "signInWithCredential:failure", task.getException());
                             System.out.println("bad");
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // ...
                     }
                 });
     }
 
     public void checkUserExist() {
-
         if (firebaseAuth.getCurrentUser() != null) {
-
-            //final String userId = firebaseAuth.getCurrentUser().getUid();
-
-            //usersDB.addValueEventListener(new ValueEventListener() {
-            //    @Override
-            //    public void onDataChange(DataSnapshot dataSnapshot) {
-            //        if (dataSnapshot.hasChild(userId)) {
-
-                        Intent navigationIntent = new Intent(getActivity(), NavigationActivity.class);
-                        startActivity(navigationIntent);
-
-           //         } else {
-
-           //             Toast.makeText(getActivity(), "You need to setup your account", Toast.LENGTH_LONG).show();
-
-           //         }
-          //      }
-
-          //      @Override
-          //      public void onCancelled(DatabaseError databaseError) {
-
-        //        }
-         //   });
+            Intent navigationIntent = new Intent(getActivity(), NavigationActivity.class);
+            startActivity(navigationIntent);
         }
     }
 }

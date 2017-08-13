@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.mradmin.androidtestapp.activities.NavigationActivity">
 
-    <group android:checkableBehavior="single">
+    <group>
 
         <item
             android:id="@+id/action_settings"
@@ -12,5 +12,12 @@
             android:title="@string/action_settings"
             app:showAsAction="never" />
 
+        <item
+            android:id="@+id/action_edit_profile"
+            android:orderInCategory="100"
+            android:title="Edit profile"
+            app:showAsAction="never" />
+
     </group>
+
 </menu>

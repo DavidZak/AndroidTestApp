@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -26,6 +27,7 @@ import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.entities.User;
 import com.example.mradmin.androidtestapp.fragments.ContactsFragment;
 import com.example.mradmin.androidtestapp.fragments.DialoguesFragment;
+import com.example.mradmin.androidtestapp.fragments.EditProfileFragment;
 import com.example.mradmin.androidtestapp.fragments.SettingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,8 +71,6 @@ public class NavigationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
-        //((FirebaseApplication)getApplication()).checkUserLogin(this);
-
         FirebaseUser user = mAuth.getCurrentUser();
 
         //for set dialogues fragment aat startup
@@ -80,7 +80,7 @@ public class NavigationActivity extends AppCompatActivity
         //for header name text
         View hView = navigationView.getHeaderView(0);
         TextView nav_user = (TextView) hView.findViewById(R.id.nav_avatar_name);
-        if (user!=null){
+        if (user != null) {
             nav_user.setText(user.getDisplayName());
         }
 
@@ -121,12 +121,24 @@ public class NavigationActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Fragment fragment = null;
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            fragment = new SettingsFragment();
+        } else if (id == R.id.action_edit_profile){
+            fragment = new EditProfileFragment();
         }
 
-        return super.onOptionsItemSelected(item);
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.nav_content, fragment).commit();
+        }
+
+        item.setChecked(true);
+        setTitle(item.getTitle());
+        return true;
+        //return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -154,9 +166,14 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
             fragment = new SettingsFragment();
+
         } else if (id == R.id.nav_dialogues) {
 
             fragment = new DialoguesFragment();
+
+        } else if (id == R.id.nav_edit_profile) {
+
+            fragment = new EditProfileFragment();
         }
 
         if (fragment != null) {

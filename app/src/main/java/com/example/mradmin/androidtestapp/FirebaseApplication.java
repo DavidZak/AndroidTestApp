@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 /**
  * Created by mrAdmin on 11.08.2017.
  */
@@ -88,6 +90,21 @@ public class FirebaseApplication extends Application {
         };
     }
 
+    public void addInfoInDatabase(final String name, String image, String status) {
+        userDB = getFirebaseDatabase();
+
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference curUser = userDB.child(userId);
+
+        HashMap<String, String> values = new HashMap<>();
+        values.put("name", name);
+        values.put("image", image);
+        values.put("status", status);
+
+        curUser.setValue(values);
+
+    }
+
     public void addNewUser(final Context context, String email, String password, final String name){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
@@ -97,11 +114,7 @@ public class FirebaseApplication extends Application {
 
                         if (task.isSuccessful()) {
 
-                            ///userDB = getFirebaseDatabase();
-
-                            //String userId = mAuth.getCurrentUser().getUid();
-                            //DatabaseReference curUser = userDB.child(userId);
-                            //curUser.child("name").setValue(name);
+                            addInfoInDatabase(name, "default", "Hi there, I'm using ...");
 
                             userProfile(name);
 

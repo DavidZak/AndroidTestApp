@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackgroundLight"
+    android:background="@color/colorBackground"
     android:id="@+id/contacts_layout_id"
     tools:context="com.example.mradmin.androidtestapp.fragments.ContactsFragment">
 
