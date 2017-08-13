@@ -108,7 +108,8 @@ public class SignUpFragment extends Fragment {
         //if (!databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim())) {
         //if (((FirebaseApplication)getActivity().getApplication()).checkUserLogin(getContext())) {
 
-            ((FirebaseApplication) getActivity().getApplication()).addNewUser(getContext(), textInputEditTextEmail.getText().toString(), textInputEditTextPassword.getText().toString());
+            ((FirebaseApplication) getActivity().getApplication()).addNewUser(getContext(), textInputEditTextEmail.getText().toString(), textInputEditTextPassword.getText().toString(),
+                    textInputEditTextName.getText().toString());
 
         //    user.setName(textInputEditTextName.getText().toString().trim());
         //    user.setEmail(textInputEditTextEmail.getText().toString().trim());

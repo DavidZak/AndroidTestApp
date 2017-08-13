@@ -1,5 +1,6 @@
 package com.example.mradmin.androidtestapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mradmin.androidtestapp.Constants;
 import com.example.mradmin.androidtestapp.FirebaseApplication;
@@ -25,11 +27,20 @@ import com.example.mradmin.androidtestapp.entities.User;
 import com.example.mradmin.androidtestapp.fragments.ContactsFragment;
 import com.example.mradmin.androidtestapp.fragments.DialoguesFragment;
 import com.example.mradmin.androidtestapp.fragments.SettingsFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab;
+
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +68,11 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        //((FirebaseApplication)getApplication()).checkUserLogin(this);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
         //for set dialogues fragment aat startup
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
@@ -64,7 +80,9 @@ public class NavigationActivity extends AppCompatActivity
         //for header name text
         View hView = navigationView.getHeaderView(0);
         TextView nav_user = (TextView) hView.findViewById(R.id.nav_avatar_name);
-        nav_user.setText(Constants.USER_EMAIL);
+        if (user!=null){
+            nav_user.setText(user.getDisplayName());
+        }
 
         //for log out button
         ImageButton logOutButton = (ImageButton) hView.findViewById(R.id.button_log_out);

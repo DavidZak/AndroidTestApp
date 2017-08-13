@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.example.mradmin.androidtestapp.fragments.firstActivityFragments.SignInFragment;
 import com.example.mradmin.androidtestapp.fragments.firstActivityFragments.SignUpFragment;
 import com.example.mradmin.androidtestapp.R;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FirstActivity extends AppCompatActivity {
 
