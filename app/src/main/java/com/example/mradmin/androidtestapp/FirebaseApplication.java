@@ -39,7 +39,7 @@ public class FirebaseApplication extends Application {
 
     public FirebaseAuth.AuthStateListener mAuthListener;
 
-    public FirebaseAuth getFirebaseAuth(){
+    public FirebaseAuth getFirebaseAuth() {
         return mAuth = FirebaseAuth.getInstance();
     }
 
@@ -47,21 +47,21 @@ public class FirebaseApplication extends Application {
         return FirebaseDatabase.getInstance().getReference().child("Users");
     }
 
-    public StorageReference getFirebaseStorage(){
+    public StorageReference getFirebaseStorage() {
         return FirebaseStorage.getInstance().getReference().child("profile_images");
     }
 
-    public void createNewUser(Context context, String email, String password){
+    public void createNewUser(Context context, String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password);
     }
 
-    public void loginAUser(final Context context, String email, String password){
+    public void loginAUser(final Context context, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password);
     }
 
     public String getFirebaseUserAuthenticateId() {
         String userId = null;
-        if(mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             userId = mAuth.getCurrentUser().getUid();
         }
         return userId;
@@ -82,22 +82,22 @@ public class FirebaseApplication extends Application {
         return false;
     }
 
-    public void checkUserLogin(final Context context){
-        if(mAuth.getCurrentUser() != null){
+    public void checkUserLogin(final Context context) {
+        if (mAuth.getCurrentUser() != null) {
             Intent profileIntent = new Intent(context, NavigationActivity.class);
             context.startActivity(profileIntent);
         }
     }
 
-    public void isUserCurrentlyLogin(final Context context){
+    public void isUserCurrentlyLogin(final Context context) {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(null != user){
+                if (null != user) {
                     Intent profileIntent = new Intent(context, NavigationActivity.class);
                     context.startActivity(profileIntent);
-                }else{
+                } else {
                     Intent loginIntent = new Intent(context, FirstActivity.class);
                     context.startActivity(loginIntent);
                 }
@@ -105,7 +105,7 @@ public class FirebaseApplication extends Application {
         };
     }
 
-    public void addInfoInDatabase(final String name, String image, String status) {
+    public void addInfoInDatabase(final String name, String image, String status, String thumb) {
         userDB = getFirebaseDatabase();
 
         String userId = mAuth.getCurrentUser().getUid();
@@ -115,12 +115,13 @@ public class FirebaseApplication extends Application {
         values.put("name", name);
         values.put("image", image);
         values.put("status", status);
+        values.put("thumb_image", thumb);
 
         curUser.setValue(values);
 
     }
 
-    public void addNewUser(final Context context, String email, String password, final String name){
+    public void addNewUser(final Context context, String email, String password, final String name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -129,21 +130,24 @@ public class FirebaseApplication extends Application {
 
                         if (task.isSuccessful()) {
 
-                            addInfoInDatabase(name, "default", "Hi there, I'm using ...");
+                            addInfoInDatabase(name, "default", "Hi there, I'm using ...", "default");
 
                             userProfile(name);
 
                             Snackbar.make(((Activity) context).findViewById(R.id.scroll_view_sign_up), getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+
                         } else {
+
                             Snackbar.make(((Activity) context).findViewById(R.id.scroll_view_sign_up), getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+
                         }
                     }
                 });
     }
 
-    public void loginUser(final Context context, String email, String password){
+    public void loginUser(final Context context, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Activity)context, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
@@ -159,9 +163,9 @@ public class FirebaseApplication extends Application {
                 });
     }
 
-    public void userProfile(String string){
+    public void userProfile(String string) {
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user!=null){
+        if (user != null) {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(string.trim())
                     .build();
@@ -170,7 +174,7 @@ public class FirebaseApplication extends Application {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Log.d("TEST", "user profile updated");
                             }
                         }

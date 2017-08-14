@@ -2,6 +2,7 @@ package com.example.mradmin.androidtestapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,9 +35,14 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,9 +54,6 @@ public class EditProfileFragment extends Fragment {
 
     FirebaseUser curUser;
     DatabaseReference currentDBUser;
-
-    TextView textViewImageName;
-    ImageButton imageButtonSelectImage;
 
     CircleImageView imageView;
     TextView textViewName;
@@ -63,9 +67,8 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        textViewImageName = (TextView) view.findViewById(R.id.image_name_text_view);
-        imageButtonSelectImage = (ImageButton) view.findViewById(R.id.button_choose_image);
-        imageButtonSelectImage.setOnClickListener(new View.OnClickListener() {
+        imageView = (CircleImageView) view.findViewById(R.id.edit_profile_image);
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent galleryIntent = new Intent();
@@ -73,14 +76,8 @@ public class EditProfileFragment extends Fragment {
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PICK);
-
-                /*CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(getActivity());*/
             }
         });
-
-        imageView = (CircleImageView) view.findViewById(R.id.edit_profile_image);
         textViewName = (TextView) view.findViewById(R.id.text_view_name_profile);
         editTextStatus = (EditText) view.findViewById(R.id.edit_profile_status);
         saveButton = (Button) view.findViewById(R.id.save_profile_button);
@@ -94,7 +91,7 @@ public class EditProfileFragment extends Fragment {
                 userDB.child(curUserUID).child("status").setValue(editTextStatus.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
+                        Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -107,7 +104,7 @@ public class EditProfileFragment extends Fragment {
         userDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseDatabase();
         currentDBUser = userDB.child(curuserUID);
 
-        imageStorage = ((FirebaseApplication)getActivity().getApplication()).getFirebaseStorage();
+        imageStorage = ((FirebaseApplication) getActivity().getApplication()).getFirebaseStorage();
 
         currentDBUser.addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,11 +113,16 @@ public class EditProfileFragment extends Fragment {
                 String name = dataSnapshot.child("name").getValue().toString();
                 String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
+                String thumb = dataSnapshot.child("thumb_image").getValue().toString();
 
-                textViewImageName.setText(image);
                 textViewName.setText(name);
                 editTextStatus.setText(status);
-                Picasso.with(getActivity()).load(image).into(imageView);
+
+                if (!image.equals("default")) {
+
+                    Picasso.with(getActivity()).load(image).placeholder(R.mipmap.ic_launcher).into(imageView);
+
+                }
             }
 
             @Override
@@ -139,14 +141,9 @@ public class EditProfileFragment extends Fragment {
         if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
 
-            //CropImage.activity(imageUri)
-            //  .setAspectRatio(1, 1)
-            //  .start(this.getActivity());
             CropImage.activity(imageUri)
                     .setAspectRatio(1, 1)
                     .start(getContext(), this);
-
-            //Toast.makeText(getContext(),imageUri,Toast.LENGTH_LONG).show();
         }
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -154,11 +151,25 @@ public class EditProfileFragment extends Fragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == RESULT_OK) {
+
                 Uri resultUri = result.getUri();
+
+                File thumb_filePath = new File(resultUri.getPath());
 
                 final String currentUserId = curUser.getUid();
 
+                Bitmap thumb_bitmap = new Compressor(getContext())
+                        .setMaxWidth(200)
+                        .setMaxHeight(200)
+                        .setQuality(75)
+                        .compressToBitmap(thumb_filePath);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                final byte[] thumb_byte = baos.toByteArray();
+
                 StorageReference filepath = imageStorage.child(currentUserId + ".jpg");
+                final StorageReference thumb_filepath = imageStorage.child("thumbs").child(currentUserId + ".jpg");
 
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -166,21 +177,44 @@ public class EditProfileFragment extends Fragment {
 
                         if (task.isSuccessful()) {
 
-                            String downloadUrl = task.getResult().getDownloadUrl().toString();
-                            currentDBUser.child("image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
+
+                            UploadTask uploadTask = thumb_filepath.putBytes(thumb_byte);
+                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(getActivity(), "uploaded", Toast.LENGTH_SHORT).show();
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                                    String thumb_downloadUrl = task.getResult().getDownloadUrl().toString();
+
+                                    if (task.isSuccessful()) {
+
+                                        Map updateHashMap = new HashMap();
+                                        updateHashMap.put("image", downloadUrl);
+                                        updateHashMap.put("thumb_image", thumb_downloadUrl);
+
+                                        currentDBUser.updateChildren(updateHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                if (task.isSuccessful()) {
+
+                                                    Toast.makeText(getActivity(), "uploaded", Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            }
+                                        });
+
+                                    } else {
+
+                                        Toast.makeText(getActivity(), "uploading failed", Toast.LENGTH_SHORT).show();
+
                                     }
                                 }
                             });
 
-                            Toast.makeText(getActivity(), "working", Toast.LENGTH_SHORT).show();
-
                         } else {
 
-                            Toast.makeText(getActivity(), "not working", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "something wrong", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -199,7 +233,7 @@ public class EditProfileFragment extends Fragment {
         StringBuilder randomStringBuilder = new StringBuilder();
         int randomLength = generator.nextInt(20);
         char tempChar;
-        for (int i = 0; i < randomLength; i++){
+        for (int i = 0; i < randomLength; i++) {
             tempChar = (char) (generator.nextInt(96) + 32);
             randomStringBuilder.append(tempChar);
         }

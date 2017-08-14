@@ -1,26 +1,19 @@
 package com.example.mradmin.androidtestapp.fragments.firstActivityFragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.InputValidation;
-import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.example.mradmin.androidtestapp.R;
-import com.example.mradmin.androidtestapp.db.DBHelper;
 import com.example.mradmin.androidtestapp.entities.User;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -49,7 +42,7 @@ public class SignUpFragment extends Fragment {
     private InputValidation inputValidation;
     //private DBHelper databaseHelper;
 
-    private User user;
+    //private User user;
 
 
     @Nullable
@@ -59,7 +52,7 @@ public class SignUpFragment extends Fragment {
 
         inputValidation = new InputValidation(getActivity());
         //databaseHelper = new DBHelper(getActivity());
-        user = new User();
+        //user = new User(name, image, status);
 
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.scroll_view_sign_up);
 

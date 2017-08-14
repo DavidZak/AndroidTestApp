@@ -1,36 +1,24 @@
 package com.example.mradmin.androidtestapp.fragments.firstActivityFragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.AppCompatButton;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.InputValidation;
-import com.example.mradmin.androidtestapp.activities.FirstActivity;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.example.mradmin.androidtestapp.R;
-import com.example.mradmin.androidtestapp.db.DBHelper;
-import com.example.mradmin.androidtestapp.entities.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -42,13 +30,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by mrAdmin on 08.08.2017.
@@ -90,7 +73,6 @@ public class SignInFragment extends Fragment {
         editTextEmail = (TextInputEditText) view.findViewById(R.id.messageEditText);
         editTextPassword = (TextInputEditText) view.findViewById(R.id.messageEditTextPassword);
 
-
         inputValidation = new InputValidation(getContext());
         //databaseHelper = new DBHelper(getContext());
 
@@ -98,7 +80,7 @@ public class SignInFragment extends Fragment {
         ((FirebaseApplication) getActivity().getApplication()).checkUserLogin(getActivity());
         userDB = ((FirebaseApplication)getActivity().getApplication()).getFirebaseDatabase();
 
-        //Goole sign in
+        //Google sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -187,7 +169,7 @@ public class SignInFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             if (!((FirebaseApplication)getActivity().getApplication()).checkUserExistInDatabase())
-                                ((FirebaseApplication)getActivity().getApplication()).addInfoInDatabase(acct.getDisplayName(), "default", "Hi there, I'm using ...");
+                                ((FirebaseApplication)getActivity().getApplication()).addInfoInDatabase(acct.getDisplayName(), "default", "Hi there, I'm using ...", "default");
 
                             System.out.println("good");
                             checkUserExist();
