@@ -13,14 +13,42 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/button_choose_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_attachment_24dp"
+                    android:backgroundTint="@color/colorIcon"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="8dp" />
+
+                <TextView
+                    android:id="@+id/image_name_text_view"
+                    android:layout_width="150dp"
+                    android:layout_height="25dp"
+                    android:textColor="@color/colorTextSecond"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="image string"/>
+
+            </LinearLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/edit_profile_image"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:layout_gravity="top|center"
-                android:layout_margin="16dp"
+                android:layout_marginBottom="16dp"
                 android:src="@mipmap/ic_launcher"
-                android:background="@drawable/status_text__stroke" />
+                />
 
             <TextView
                 android:id="@+id/text_view_name_profile"
@@ -30,21 +58,20 @@
                 android:text="Default Name"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_margin="8dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorTextSecond"/>
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="128dp"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/status_text__stroke">
 
                 <EditText
                     android:id="@+id/edit_profile_status"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
+                    android:layout_margin="4dp"
                     android:hint="Type your status here..."
                     android:textColorHint="@color/colorTextSecond"
                     android:backgroundTint="@color/colorBackground"

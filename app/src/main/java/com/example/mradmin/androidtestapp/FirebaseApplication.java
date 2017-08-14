@@ -6,26 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mradmin.androidtestapp.activities.FirstActivity;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
-import com.example.mradmin.androidtestapp.activities.ProfileActivity;
-import com.example.mradmin.androidtestapp.entities.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
@@ -41,6 +35,8 @@ public class FirebaseApplication extends Application {
 
     private DatabaseReference userDB;
 
+    private FirebaseStorage mStorage;
+
     public FirebaseAuth.AuthStateListener mAuthListener;
 
     public FirebaseAuth getFirebaseAuth(){
@@ -49,6 +45,10 @@ public class FirebaseApplication extends Application {
 
     public DatabaseReference getFirebaseDatabase() {
         return FirebaseDatabase.getInstance().getReference().child("Users");
+    }
+
+    public StorageReference getFirebaseStorage(){
+        return FirebaseStorage.getInstance().getReference().child("profile_images");
     }
 
     public void createNewUser(Context context, String email, String password){
