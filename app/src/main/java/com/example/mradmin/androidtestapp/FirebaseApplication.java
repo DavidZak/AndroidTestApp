@@ -67,6 +67,21 @@ public class FirebaseApplication extends Application {
         return userId;
     }
 
+    public boolean checkUserExistInDatabase() {
+        userDB = getFirebaseDatabase();
+
+        String userId = mAuth.getCurrentUser().getUid();
+        if (userId != null) {
+            DatabaseReference curUser = userDB.child(userId);
+            if (curUser != null)
+                return true;
+            else
+                return false;
+        }
+
+        return false;
+    }
+
     public void checkUserLogin(final Context context){
         if(mAuth.getCurrentUser() != null){
             Intent profileIntent = new Intent(context, NavigationActivity.class);

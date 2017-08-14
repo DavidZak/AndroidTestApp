@@ -186,8 +186,8 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            ((FirebaseApplication)getActivity().getApplication()).addInfoInDatabase(acct.getDisplayName(), "default", "Hi there, I'm using ...");
+                            if (!((FirebaseApplication)getActivity().getApplication()).checkUserExistInDatabase())
+                                ((FirebaseApplication)getActivity().getApplication()).addInfoInDatabase(acct.getDisplayName(), "default", "Hi there, I'm using ...");
 
                             System.out.println("good");
                             checkUserExist();
