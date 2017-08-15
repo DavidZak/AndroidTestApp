@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -34,6 +36,8 @@ public class FirebaseApplication extends Application {
     public FirebaseAuth mAuth;
 
     private DatabaseReference userDB;
+    private DatabaseReference friendRequestDB;
+    private DatabaseReference friendsDB;
 
     private FirebaseStorage mStorage;
 
@@ -47,8 +51,32 @@ public class FirebaseApplication extends Application {
         return FirebaseDatabase.getInstance().getReference().child("Users");
     }
 
+    public DatabaseReference getFirebaseFriendRequestDatabase(){
+        return FirebaseDatabase.getInstance().getReference().child("Friend_req");
+    }
+
+    public DatabaseReference getFirebaseFriendsDatabase(){
+        return FirebaseDatabase.getInstance().getReference().child("Friends");
+    }
+
     public StorageReference getFirebaseStorage() {
         return FirebaseStorage.getInstance().getReference().child("profile_images");
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        //Picasso
+
+        Picasso.Builder builder = new Picasso.Builder(this);
+        builder.downloader(new OkHttpDownloader(this, Integer.MAX_VALUE));
+        Picasso built = builder.build();
+        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(built);
     }
 
     public void createNewUser(Context context, String email, String password) {

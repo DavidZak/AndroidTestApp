@@ -146,8 +146,6 @@ public class NavigationActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             fragment = new SettingsFragment();
-        } else if (id == R.id.action_edit_profile){
-            fragment = new EditProfileFragment();
         }
 
         if (fragment != null) {

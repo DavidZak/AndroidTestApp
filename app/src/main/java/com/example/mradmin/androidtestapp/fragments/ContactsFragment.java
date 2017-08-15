@@ -21,6 +21,7 @@ import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.activities.MessagingActivity;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
+import com.example.mradmin.androidtestapp.activities.ProfileActivity;
 import com.example.mradmin.androidtestapp.entities.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,22 +55,8 @@ public class ContactsFragment extends Fragment {
         listView.setHasFixedSize(true);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        //ContactAdapter contactAdapter = new ContactAdapter(getActivity(),
-        //        R.layout.contact_row_layout);
-
-        //listView.setAdapter(contactAdapter);
-
-        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //        Intent intent = new Intent(getContext(), MessagingActivity.class);
-        //        intent.putExtra("title", title);
-        //        startActivity(intent);
-        //    }
-        //});
-
         return rootView;
     }
-
 
     @Override
     public void onStart() {
@@ -88,8 +75,22 @@ public class ContactsFragment extends Fragment {
                 viewHolder.setUserStatus(model.getStatus());
                 viewHolder.setUserImage(model.getImage(), getContext()); // model.getThumbImage()
 
-
                 System.out.println(model.getImage() +"--------------------------"+ model.getThumbImage());
+
+                //to profile activity
+                final String userId = getRef(position).getKey();
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent profileIntent = new Intent(getActivity(), ProfileActivity.class);
+                        profileIntent.putExtra("user_id", userId);
+                        profileIntent.putExtra("title", title);
+                        startActivity(profileIntent);
+
+                    }
+                });
             }
         };
 
@@ -130,35 +131,4 @@ public class ContactsFragment extends Fragment {
 
         }
     }
-
-    /*class ContactAdapter extends ArrayAdapter<String> {
-
-        private Context mContext;
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-
-        public ContactAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-            mContext = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_row_layout, parent, false);
-            }
-
-            CircleImageView imageView = (CircleImageView) convertView.findViewById(R.id.imageViewContactImage);
-            TextView textViewName = (TextView) convertView.findViewById(R.id.textViewContactName);
-            TextView textViewMessageStatus = (TextView) convertView.findViewById(R.id.textViewContactMessageStatus);
-
-            title = textViewName.getText().toString();
-
-            return convertView;
-        }
-    }*/
 }

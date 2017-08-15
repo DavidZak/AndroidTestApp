@@ -31,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -102,6 +104,8 @@ public class EditProfileFragment extends Fragment {
         String curuserUID = curUser.getUid();
 
         userDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseDatabase();
+        userDB.keepSynced(true);
+
         currentDBUser = userDB.child(curuserUID);
 
         imageStorage = ((FirebaseApplication) getActivity().getApplication()).getFirebaseStorage();
@@ -111,7 +115,7 @@ public class EditProfileFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumb = dataSnapshot.child("thumb_image").getValue().toString();
 
@@ -120,7 +124,20 @@ public class EditProfileFragment extends Fragment {
 
                 if (!image.equals("default")) {
 
-                    Picasso.with(getActivity()).load(image).placeholder(R.mipmap.ic_launcher).into(imageView);
+                    Picasso.with(getActivity()).load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.mipmap.ic_launcher).into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                            Picasso.with(getActivity()).load(image).placeholder(R.mipmap.ic_launcher).into(imageView);
+
+                        }
+                    });
 
                 }
             }
