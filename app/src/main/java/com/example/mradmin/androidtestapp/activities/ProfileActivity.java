@@ -19,12 +19,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -40,6 +42,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference friendRequestDB;
 
     private DatabaseReference friendsDatabase;
+
+    private DatabaseReference notificationsDatabase;
 
     private FirebaseUser currentUser;
 
@@ -58,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         friendRequestDB = ((FirebaseApplication)getApplication()).getFirebaseFriendRequestDatabase();
         currentUser = ((FirebaseApplication)getApplication()).getFirebaseAuth().getCurrentUser();
         friendsDatabase = ((FirebaseApplication)getApplication()).getFirebaseFriendsDatabase();
+        notificationsDatabase = ((FirebaseApplication)getApplication()).getNotificationsDatabase();
 
         imageViewProfileImage=(ImageView)findViewById(R.id.imageViewContactImage);
         textViewProfileName = (TextView)findViewById(R.id.textViewContactName);
@@ -195,8 +200,21 @@ public class ProfileActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
-                                        currentState = "req_sent";
-                                        buttonFriendRequest.setText("Cancel friend request");
+                                        HashMap<String, String> notificationData = new HashMap<String, String>();
+                                        notificationData.put("from", currentUser.getUid());
+                                        notificationData.put("type", "request");
+
+                                        notificationsDatabase.child(userId).push().setValue(notificationData)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+
+                                                        currentState = "req_sent";
+                                                        buttonFriendRequest.setText("Cancel friend request");
+
+                                                    }
+                                                });
+
 
                                         Toast.makeText(ProfileActivity.this,"REQUEST SENT",Toast.LENGTH_LONG).show();
 
