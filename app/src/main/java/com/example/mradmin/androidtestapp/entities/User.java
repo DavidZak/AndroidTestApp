@@ -35,11 +35,6 @@ public class User {
         this.status = status;
     }
 
-
-    public User(){
-
-    }
-
     public String getThumbImage() {
         return thumbImage;
     }
@@ -47,6 +42,11 @@ public class User {
     public void setThumbImage(String thumbImage) {
         this.thumbImage = thumbImage;
     }
+
+    public User(){
+
+    }
+
 
     public User(String name, String image, String status, String thumbImage) {
         this.name = name;

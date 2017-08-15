@@ -2,18 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorBackground"
-    android:padding="5dp">
+    android:padding="4dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewDialogueImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="8dp"
         android:src="@mipmap/ic_launcher"
         android:gravity="center" />
 
@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_toRightOf="@id/imageViewDialogueImage"
-        android:layout_margin="5dp">
+        android:layout_marginLeft="8dp"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:id="@+id/textViewDialogueName"
@@ -31,20 +32,20 @@
             android:layout_toRightOf="@+id/imageViewDialogueImage"
             android:text="Name"
             android:singleLine="true"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_weight="1"
             android:textColor="@color/colorTextFirst"/>
 
         <TextView
             android:id="@+id/textViewMessageTime"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/textViewDialogueName"
             android:layout_alignParentRight="true"
             android:text="11:23"
             android:singleLine="true"
             android:textColor="@color/colorTextSecond"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="4dp"/>
 
     </LinearLayout>
 
@@ -52,11 +53,12 @@
         android:id="@+id/textViewMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageViewDialogueImage"
-        android:layout_toRightOf="@id/imageViewDialogueImage"
         android:text="Last message"
         android:singleLine="true"
         android:textColor="@color/colorTextSecond"
-        android:layout_margin="5dp"/>
+        android:layout_marginLeft="8dp"
+        android:layout_alignBottom="@+id/imageViewDialogueImage"
+        android:layout_marginBottom="12dp"
+        android:layout_toEndOf="@+id/imageViewDialogueImage" />
 
 </RelativeLayout>

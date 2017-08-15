@@ -36,6 +36,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,7 +74,7 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mAuth = ((FirebaseApplication)getApplication()).getFirebaseAuth();
+        mAuth = ((FirebaseApplication) getApplication()).getFirebaseAuth();
         FirebaseUser user = mAuth.getCurrentUser();
 
         //for set dialogues fragment aat startup
@@ -84,16 +88,32 @@ public class NavigationActivity extends AppCompatActivity
             nav_user.setText(user.getDisplayName());
         }
 
+
+        //for header image avatar
+        CircleImageView circleImageView = (CircleImageView) hView.findViewById(R.id.imageViewHeaderAvatar);
+        StorageReference storageReference = ((FirebaseApplication) getApplication()).getFirebaseStorage();
+        StorageReference thumbs = storageReference.child("thumbs");
+        StorageReference thumb = thumbs.child(user.getUid() + ".jpg");
+        String thumbUrl = thumb.getDownloadUrl().toString();
+        setUserImageAvatar(thumbUrl, this, circleImageView);
+
+
         //for log out button
         ImageButton logOutButton = (ImageButton) hView.findViewById(R.id.button_log_out);
         logOutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("------- log out -------");
 
-                ((FirebaseApplication)getApplication()).getFirebaseAuth().signOut();
+                ((FirebaseApplication) getApplication()).getFirebaseAuth().signOut();
                 startActivity(new Intent(NavigationActivity.this, FirstActivity.class));
             }
         });
+    }
+
+    public void setUserImageAvatar(String image, Context context, CircleImageView userImageView) {
+
+        Picasso.with(context).load(image).placeholder(R.mipmap.ic_launcher).into(userImageView);
+
     }
 
     @Override

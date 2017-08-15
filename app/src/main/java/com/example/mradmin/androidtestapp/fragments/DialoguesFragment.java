@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,26 +74,26 @@ public class DialoguesFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_dialogues, container, false);
 
-        final ListView listView = (ListView) rootView.findViewById(R.id.dialoguesListView);
+        final RecyclerView listView = (RecyclerView) rootView.findViewById(R.id.dialoguesListView);
 
-        DialogueAdapter dialogueAdapter = new DialogueAdapter(getActivity(),
-                R.layout.dialogue_row_layout);
+        //DialogueAdapter dialogueAdapter = new DialogueAdapter(getActivity(),
+        //        R.layout.dialogue_row_layout);
 
-        listView.setAdapter(dialogueAdapter);
+        //listView.setAdapter(dialogueAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), MessagingActivity.class);
-                intent.putExtra("title", title);
-                startActivity(intent);
-            }
-        });
+        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //        Intent intent = new Intent(getContext(), MessagingActivity.class);
+        //        intent.putExtra("title", title);
+        //        startActivity(intent);
+        //    }
+        //});
 
         return rootView;
     }
 
-    class DialogueAdapter extends ArrayAdapter<String> {
+    /*class DialogueAdapter extends ArrayAdapter<String> {
 
         private Context mContext;
 
@@ -122,5 +123,5 @@ public class DialoguesFragment extends Fragment {
 
             return convertView;
         }
-    }
+    }*/
 }

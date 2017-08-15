@@ -4,45 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackground"
-    android:padding="5dp">
+    android:padding="8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewContactImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginLeft="8dp"
         android:src="@mipmap/ic_launcher"
         android:gravity="center" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_toRightOf="@id/imageViewContactImage"
-        android:layout_margin="5dp">
+        android:layout_marginLeft="8dp">
 
         <TextView
             android:id="@+id/textViewContactName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/imageViewDialogueImage"
+            android:layout_toRightOf="@+id/imageViewContactImage"
             android:text="Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:singleLine="true"
             android:layout_gravity="top"
             android:textColor="@color/colorTextFirst"
-            android:layout_marginBottom="5dp"
-            android:textStyle="bold"/>
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/textViewContactMessageStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/textViewDialogueName"
+            android:layout_toRightOf="@+id/textViewContactName"
             android:layout_alignParentRight="true"
             android:singleLine="true"
             android:text="Status"

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +20,10 @@ import android.widget.TextView;
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.activities.MessagingActivity;
+import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.example.mradmin.androidtestapp.entities.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
@@ -83,8 +86,10 @@ public class ContactsFragment extends Fragment {
 
                 viewHolder.setName(model.getName());
                 viewHolder.setUserStatus(model.getStatus());
-                viewHolder.setUserImage(model.getThumbImage(), getContext());
+                viewHolder.setUserImage(model.getImage(), getContext()); // model.getThumbImage()
 
+
+                System.out.println(model.getImage() +"--------------------------"+ model.getThumbImage());
             }
         };
 
