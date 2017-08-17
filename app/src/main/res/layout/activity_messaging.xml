@@ -20,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_margin="2dp"
             android:layout_height="0dp"
-            android:layout_weight="100"
-            android:background="@drawable/messaging_scroll_view">
+            android:layout_weight="100">
 
         </ScrollView>
 
@@ -42,7 +41,8 @@
                 android:background="@drawable/ic_attach_file_24dp"
                 android:backgroundTint="@color/colorIcon"
                 android:layout_marginLeft="2dp"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="16dp"
+                android:rotation="45"/>
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/messageTextInput"
@@ -54,6 +54,7 @@
                 android:backgroundTint="@color/colorIcon"
                 android:hint="Input message"
                 android:textColorHint="@color/colorTextSecond"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 />
 
             <ImageButton
@@ -64,7 +65,7 @@
                 android:background="@drawable/ic_menu_send"
                 android:backgroundTint="@color/colorIcon"
                 android:layout_marginRight="2dp"
-                android:layout_marginLeft="8dp"/>
+                android:layout_marginLeft="16dp"/>
 
         </LinearLayout>
 

@@ -114,6 +114,7 @@ public class SignInFragment extends Fragment {
                 signIn();
             }
         });
+        googleButton.setEnabled(false);  // ------------------ fix proble mwith google sign in
 
         return view;
     }
@@ -168,8 +169,12 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            if (!((FirebaseApplication)getActivity().getApplication()).checkUserExistInDatabase())
+                            if (!((FirebaseApplication)getActivity().getApplication()).checkUserExistInDatabase()){
+
+                                System.out.println("------------- not exist in db -------------");
                                 ((FirebaseApplication)getActivity().getApplication()).addInfoInDatabase(acct.getDisplayName(), "default", "Hi there, I'm using ...", "default");
+
+                            }
 
                             System.out.println("good");
                             checkUserExist();

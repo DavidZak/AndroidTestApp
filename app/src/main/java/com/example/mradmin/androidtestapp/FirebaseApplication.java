@@ -11,13 +11,19 @@ import android.util.Log;
 import com.example.mradmin.androidtestapp.activities.FirstActivity;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.OkHttpDownloader;
@@ -82,6 +88,35 @@ public class FirebaseApplication extends Application {
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
+
+        mAuth = getFirebaseAuth();
+        userDB = getFirebaseDatabase();
+
+        FirebaseUser curUser = mAuth.getCurrentUser();
+
+        if (curUser != null) {
+
+            final DatabaseReference user = userDB.child(mAuth.getCurrentUser().getUid());
+
+            user.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot != null) {
+
+                        user.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
     }
 
     public void createNewUser(Context context, String email, String password) {
@@ -139,12 +174,14 @@ public class FirebaseApplication extends Application {
     }
 
     public void addInfoInDatabase(final String name, String image, String status, String thumb) {
-        userDB = getFirebaseDatabase();
 
         String userId = mAuth.getCurrentUser().getUid();
         DatabaseReference curUser = userDB.child(userId);
 
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
         HashMap<String, String> values = new HashMap<>();
+        values.put("device_token", deviceToken);
         values.put("name", name);
         values.put("image", image);
         values.put("status", status);
@@ -162,6 +199,8 @@ public class FirebaseApplication extends Application {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
+
+                            userDB = getFirebaseDatabase();
 
                             addInfoInDatabase(name, "default", "Hi there, I'm using ...", "default");
 
@@ -189,8 +228,25 @@ public class FirebaseApplication extends Application {
                             Snackbar.make(((Activity) context).findViewById(R.id.nested_scroll_view_sign_in), getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).show();
                         } else {
                             //checkUserExist(((Activity) context).getParent());
-                            Intent profileIntent = new Intent(context, NavigationActivity.class);
-                            context.startActivity(profileIntent);
+
+                            String curUserId = mAuth.getCurrentUser().getUid();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                            getFirebaseDatabase().child(curUserId).child("device_token").setValue(deviceToken)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            Snackbar.make(((Activity) context).findViewById(R.id.nested_scroll_view_sign_in), getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+
+                                            Intent profileIntent = new Intent(context, NavigationActivity.class);
+                                            context.startActivity(profileIntent);
+
+
+                                        }
+                                    });
+
+
                         }
                     }
                 });

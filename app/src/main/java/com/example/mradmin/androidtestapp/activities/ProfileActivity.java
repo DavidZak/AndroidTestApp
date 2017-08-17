@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -266,14 +267,14 @@ public class ProfileActivity extends AppCompatActivity {
 
                     buttonDeclineFriendRequest.setVisibility(View.INVISIBLE);
 
-                    final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
+                    final String currentDate = ServerValue.TIMESTAMP.toString();       //need min sdk version 24
 
-                    friendsDatabase.child(currentUser.getUid()).child(userId).setValue(currentDate)
+                    friendsDatabase.child(currentUser.getUid()).child(userId).child("date").setValue(currentDate)//(currentDate)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
-                                    friendsDatabase.child(userId).child(currentUser.getUid()).setValue(currentDate)
+                                    friendsDatabase.child(userId).child(currentUser.getUid()).child("date").setValue(currentDate)//(currentDate)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
@@ -291,7 +292,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                                                     buttonFriendRequest.setEnabled(true);
                                                                                     currentState = "friends";
                                                                                     buttonFriendRequest.setText("Unfriend this person");
-
+                                                                                    buttonDeclineFriendRequest.setVisibility(View.INVISIBLE);
                                                                                     Toast.makeText(ProfileActivity.this,"REQUEST ACCEPTED",Toast.LENGTH_LONG).show();
 
                                                                                 }

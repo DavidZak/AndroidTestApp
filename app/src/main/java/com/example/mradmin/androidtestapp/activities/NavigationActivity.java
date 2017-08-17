@@ -28,6 +28,7 @@ import com.example.mradmin.androidtestapp.entities.User;
 import com.example.mradmin.androidtestapp.fragments.ContactsFragment;
 import com.example.mradmin.androidtestapp.fragments.DialoguesFragment;
 import com.example.mradmin.androidtestapp.fragments.EditProfileFragment;
+import com.example.mradmin.androidtestapp.fragments.FriendsFragment;
 import com.example.mradmin.androidtestapp.fragments.SettingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -47,6 +49,7 @@ public class NavigationActivity extends AppCompatActivity
     FloatingActionButton fab;
 
     FirebaseAuth mAuth;
+    DatabaseReference userDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,8 @@ public class NavigationActivity extends AppCompatActivity
 
         mAuth = ((FirebaseApplication) getApplication()).getFirebaseAuth();
         FirebaseUser user = mAuth.getCurrentUser();
+        userDB = ((FirebaseApplication)getApplication()).getFirebaseDatabase().child(user.getUid());
+
 
         //for set dialogues fragment aat startup
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -108,6 +113,39 @@ public class NavigationActivity extends AppCompatActivity
                 startActivity(new Intent(NavigationActivity.this, FirstActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser curUser = mAuth.getCurrentUser();
+
+        if (curUser == null) {
+
+            Intent first = new Intent(NavigationActivity.this, FirstActivity.class);
+            startActivity(first);
+            finish();
+
+        } else {
+
+            userDB.child("online").setValue("true");
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FirebaseUser curUser = mAuth.getCurrentUser();
+
+        if (curUser != null){
+
+            userDB.child("online").setValue(ServerValue.TIMESTAMP);
+
+        }
+
     }
 
     public void setUserImageAvatar(String image, Context context, CircleImageView userImageView) {
@@ -146,6 +184,8 @@ public class NavigationActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             fragment = new SettingsFragment();
+        } else if (id == R.id.action_contacts) {
+            fragment = new ContactsFragment();
         }
 
         if (fragment != null) {
@@ -177,9 +217,9 @@ public class NavigationActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_contacts) {
+        } else if (id == R.id.nav_friends) {
 
-            fragment = new ContactsFragment();
+            fragment = new FriendsFragment();
 
         } else if (id == R.id.nav_settings) {
 

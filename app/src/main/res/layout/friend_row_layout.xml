@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground"
+    android:padding="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewFriendImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:src="@mipmap/ic_launcher"
+        android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/imageViewOnlineImage"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_toRightOf="@id/imageViewFriendImage"
+        android:layout_alignBottom="@id/imageViewFriendImage"
+        android:layout_marginLeft="-18dp"
+        android:src="@drawable/ic_brightness_black_24dp"
+        android:background="@drawable/image_online_stroke"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/imageViewFriendImage"
+        android:layout_marginLeft="8dp">
+
+        <TextView
+            android:id="@+id/textViewFriendName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageViewFriendImage"
+            android:text="Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:singleLine="true"
+            android:layout_gravity="top"
+            android:textColor="@color/colorTextFirst"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/textViewFriendLastTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textViewFriendName"
+            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:text="Last seen "
+            android:textColor="@color/colorTextSecond"
+            android:layout_gravity="bottom" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
