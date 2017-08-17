@@ -1,17 +1,28 @@
 package com.example.mradmin.androidtestapp.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
+import com.example.mradmin.androidtestapp.fragments.ContactsFragment;
+import com.example.mradmin.androidtestapp.fragments.SettingsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -48,7 +59,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
 
+    private String userId;
+
     private String currentState;
+
+    private Toolbar profileToolbar;
+
+    private TextView profileName;
+    private ImageButton buttonSendMessage;
+
+    public String title = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +76,28 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         String title = getIntent().getStringExtra("title").toString(); // Now, message has Drawer title
-        setTitle(title);
+        //setTitle(title);
 
-        final String userId = getIntent().getExtras().getString("user_id");
+
+        profileToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(profileToolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(title);
+
+        profileName = (TextView) findViewById(R.id.profile_toolbar_name);
+        //profileName.setText(title);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View actionBarView = inflater.inflate(R.layout.profile_toolbar_layout, null);
+
+        actionBar.setCustomView(actionBarView);
+
+        userId = getIntent().getExtras().getString("user_id");
         userDB = ((FirebaseApplication)getApplication()).getFirebaseDatabase().child(userId);
         friendRequestDB = ((FirebaseApplication)getApplication()).getFirebaseFriendRequestDatabase();
         currentUser = ((FirebaseApplication)getApplication()).getFirebaseAuth().getCurrentUser();
@@ -113,9 +152,10 @@ public class ProfileActivity extends AppCompatActivity {
                 String displayName = dataSnapshot.child("name").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String image = dataSnapshot.child("image").getValue().toString();
-
                 textViewProfileName.setText(displayName);
                 textViewProfileStatus.setText(status);
+
+                profileName.setText(displayName);   //-------------------------------------------for toolbar title
 
                 Picasso.with(ProfileActivity.this).load(image).placeholder(R.mipmap.ic_launcher_1).into(imageViewProfileImage);
 
@@ -342,5 +382,21 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        buttonSendMessage = (ImageButton)profileToolbar.findViewById(R.id.toolbar_button_send_message);
+        buttonSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                System.out.println("--------------------------------------------------------click");
+
+                Intent messagingIntent = new Intent(ProfileActivity.this, MessagingActivity.class);
+                messagingIntent.putExtra("title", profileName.getText());
+                messagingIntent.putExtra("user_id", userId);
+                startActivity(messagingIntent);
+
+            }
+        });
+
     }
 }

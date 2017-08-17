@@ -86,6 +86,7 @@ public class ContactsFragment extends Fragment {
 
                         Intent profileIntent = new Intent(getActivity(), ProfileActivity.class);
                         profileIntent.putExtra("user_id", userId);
+                        title = userDB.child(userId).child("name").toString();
                         profileIntent.putExtra("title", title);
                         startActivity(profileIntent);
 

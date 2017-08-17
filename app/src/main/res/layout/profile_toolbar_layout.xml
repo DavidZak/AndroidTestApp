@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    app:theme="@style/ToolbarStyle" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/profile_toolbar_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:singleLine="true"
+            android:textColor="@color/colorTextFirst"
+            android:layout_gravity="left|center"/>
+
+        <ImageButton
+            android:id="@+id/toolbar_button_send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_menu_send"
+            android:backgroundTint="@color/colorTextFirst"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="16dp"/>
+
+    </FrameLayout>
+</android.support.v7.widget.Toolbar>
