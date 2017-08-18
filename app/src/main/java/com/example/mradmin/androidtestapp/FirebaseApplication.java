@@ -46,6 +46,7 @@ public class FirebaseApplication extends Application {
     private DatabaseReference friendsDB;
     private DatabaseReference notificationsDB;
     private DatabaseReference dialoguesDB;
+    private DatabaseReference blogDB;
 
     private FirebaseStorage mStorage;
 
@@ -73,6 +74,10 @@ public class FirebaseApplication extends Application {
 
     public DatabaseReference getDialoguesDatabase() {
         return FirebaseDatabase.getInstance().getReference().child("Dialogues");
+    }
+
+    public DatabaseReference getFirebaseBlogDatabase() {
+        return FirebaseDatabase.getInstance().getReference().child("Blog");
     }
 
     public StorageReference getFirebaseStorage() {

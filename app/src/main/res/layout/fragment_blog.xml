@@ -8,8 +8,15 @@
     android:id="@+id/blog_layout_id"
     tools:context="com.example.mradmin.androidtestapp.fragments.BlogFragment">
 
+    <ImageButton
+        android:id="@+id/blogButtonNewPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_create_message_24dp"
+        android:layout_margin="8dp"/>
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/vlogListView"
+        android:id="@+id/blogListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -3,17 +3,19 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/ic_mode_edit_black_24dp"
+            android:title="Blog" />
+
+        <item
             android:id="@+id/nav_dialogues"
             android:icon="@drawable/ic_menu_send"
             android:title="Dialogues" />
+
         <item
             android:id="@+id/nav_friends"
             android:icon="@drawable/ic_people_black_24dp"
             android:title="Friends" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
 
         <item
             android:id="@+id/nav_edit_profile"
@@ -21,9 +23,9 @@
             android:title="Edit Profile" />
 
         <item
-            android:id="@+id/nav_blog"
-            android:icon="@drawable/ic_mode_edit_black_24dp"
-            android:title="Blog" />
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings" />
 
         <item
             android:id="@+id/nav_share"
