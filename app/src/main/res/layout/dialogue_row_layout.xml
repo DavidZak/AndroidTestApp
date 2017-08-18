@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/textViewDialogueName"
             android:layout_alignParentRight="true"
-            android:text="11:23"
+            android:text="never"
             android:singleLine="true"
             android:textColor="@color/colorTextSecond"
             android:layout_marginLeft="4dp"/>
@@ -53,7 +53,7 @@
         android:id="@+id/textViewMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Last message"
+        android:text=""
         android:singleLine="true"
         android:textColor="@color/colorTextSecond"
         android:layout_marginLeft="8dp"

@@ -10,7 +10,7 @@ public class Dialogue {
     private String image;
     private String lastMessage;
     private String thumbImage;
-    private long time;
+    private String time;
 
     public String getName() {
         return name;
@@ -40,7 +40,7 @@ public class Dialogue {
 
     }
 
-    public Dialogue(String name, String image, String lastMessage, String thumbImage, long time) {
+    public Dialogue(String name, String image, String lastMessage, String thumbImage, String time) {
         this.name = name;
         this.image = image;
         this.lastMessage = lastMessage;
@@ -48,11 +48,11 @@ public class Dialogue {
         this.time = time;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

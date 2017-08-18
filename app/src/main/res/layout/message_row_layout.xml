@@ -12,11 +12,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:padding="8dp"
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:background="@drawable/message_bubble_view"
         android:textColor="@color/colorTextFirst"
         android:layout_toRightOf="@id/imageViewContactImage"
-        tools:text="Messaghfgjfgjfgjhgjghjghjghjghjghjghjghdfdsfdsfd"
+        tools:text="Messaghfgjfgjfgjhgjghjghddsfgdsgdsfdsdfsfdsfdsfdsfdsfdsadsadadsadsadsadasdsadsa"
         android:textStyle="bold"/>
 
 </RelativeLayout>

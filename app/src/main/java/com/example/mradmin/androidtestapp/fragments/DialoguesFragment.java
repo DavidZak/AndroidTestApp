@@ -17,12 +17,19 @@ import android.widget.TextView;
 
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
+import com.example.mradmin.androidtestapp.TimeSinceAgo;
 import com.example.mradmin.androidtestapp.activities.MessagingActivity;
 import com.example.mradmin.androidtestapp.activities.ProfileActivity;
 import com.example.mradmin.androidtestapp.entities.Dialogue;
 import com.example.mradmin.androidtestapp.entities.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -77,7 +84,10 @@ public class DialoguesFragment extends Fragment {
 
     RecyclerView listView;
 
-    private DatabaseReference userDB;
+    private FirebaseAuth mAuth;
+    private DatabaseReference messagesDB;
+    private DatabaseReference usersDB;
+    private String curUserId;
 
     private String title = "";
 
@@ -86,25 +96,16 @@ public class DialoguesFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_dialogues, container, false);
 
-        userDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseDatabase();
+        mAuth = FirebaseAuth.getInstance();
+        curUserId = mAuth.getCurrentUser().getUid();
+        messagesDB = FirebaseDatabase.getInstance().getReference().child("Messages");
+        messagesDB.keepSynced(true);
+        usersDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseDatabase();
+        usersDB.keepSynced(true);
 
         listView = (RecyclerView) rootView.findViewById(R.id.dialoguesListView);
         listView.setHasFixedSize(true);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-        //DialogueAdapter dialogueAdapter = new DialogueAdapter(getActivity(),
-        //        R.layout.dialogue_row_layout);
-
-        //listView.setAdapter(dialogueAdapter);
-
-        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //        Intent intent = new Intent(getContext(), MessagingActivity.class);
-        //        intent.putExtra("title", title);
-        //        startActivity(intent);
-        //    }
-        //});
 
         return rootView;
     }
@@ -118,19 +119,53 @@ public class DialoguesFragment extends Fragment {
                 Dialogue.class,
                 R.layout.dialogue_row_layout,
                 DialoguesFragment.DialogueViewHolder.class,
-                userDB
+                usersDB
         ) {
             @Override
-            protected void populateViewHolder(DialoguesFragment.DialogueViewHolder viewHolder, final Dialogue model, int position) {
+            protected void populateViewHolder(final DialoguesFragment.DialogueViewHolder viewHolder, final Dialogue model, int position) {
 
                 viewHolder.setName(model.getName());
                 //viewHolder.setUserStatus(model.getStatus());
                 viewHolder.setUserImage(model.getImage(), getContext()); // model.getThumbImage()
 
-                System.out.println(model.getImage() +"--------------------------"+ model.getThumbImage());
+                System.out.println(model.getImage() + "--------------------------" + model.getThumbImage());
 
                 //to profile activity
                 final String userId = getRef(position).getKey();
+
+                System.out.println("------------------------------------------------------------------------" + userId);
+
+                messagesDB.child(curUserId).child(userId).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        String time = dataSnapshot.child("time").getValue().toString();
+                        String lastMessage = dataSnapshot.child("message").getValue().toString();
+
+                        viewHolder.setDialogueMessageAndTime(lastMessage, time);
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -144,6 +179,7 @@ public class DialoguesFragment extends Fragment {
 
                     }
                 });
+
             }
         };
 
@@ -169,12 +205,21 @@ public class DialoguesFragment extends Fragment {
             userNameView.setText(name);
         }
 
-        //public void setDialogueMessageAndTime(String message, long time) {
+        public void setDialogueMessageAndTime(String message, String time) {
 
-        //    TextView userStatusView = (TextView) mView.findViewById(R.id.textViewContactMessageStatus);
-        //    userStatusView.setText(message);
+            TextView userMessageView = (TextView) mView.findViewById(R.id.textViewMessage);
 
-        //}
+            TextView messageTime = (TextView) mView.findViewById(R.id.textViewMessageTime);
+
+            userMessageView.setText(message);
+
+            TimeSinceAgo timeSinceAgo = new TimeSinceAgo();
+            long lastTime = Long.parseLong(time);
+            String lastSeen = timeSinceAgo.getTimeAgo(lastTime);
+
+            messageTime.setText(lastSeen);
+
+        }
 
         public void setUserImage(String image, Context context) {
 
@@ -184,38 +229,4 @@ public class DialoguesFragment extends Fragment {
 
         }
     }
-
-
-
-    /*class DialogueAdapter extends ArrayAdapter<String> {
-
-        private Context mContext;
-
-        @Override
-        public int getCount() {
-            return 10;
-        }
-
-        public DialogueAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-            mContext = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.dialogue_row_layout, parent, false);
-            }
-
-            CircleImageView imageView = (CircleImageView) convertView.findViewById(R.id.imageViewDialogueImage);
-            TextView textViewName = (TextView) convertView.findViewById(R.id.textViewDialogueName);
-            TextView textViewMessage = (TextView) convertView.findViewById(R.id.textViewMessage);
-            TextView textViewMessageTime = (TextView) convertView.findViewById(R.id.textViewMessageTime);
-
-            title = textViewName.getText().toString();
-
-            return convertView;
-        }
-    }*/
 }

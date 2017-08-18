@@ -1,19 +1,31 @@
 package com.example.mradmin.androidtestapp;
 
 import android.app.Application;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mradmin.androidtestapp.activities.ProfileActivity;
 import com.example.mradmin.androidtestapp.entities.Message;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static java.security.AccessController.getContext;
 
 /**
  * Created by mrAdmin on 18.08.2017.
@@ -23,12 +35,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     private List<Message> messageList;
     private FirebaseAuth mAuth;
+    private DatabaseReference userDB;
 
     public MessageAdapter(List<Message> messageList) {
 
         this.messageList = messageList;
 
         mAuth = FirebaseAuth.getInstance();
+        userDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
     }
 
@@ -43,7 +57,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
+    public void onBindViewHolder(final MessageViewHolder holder, int position) {
 
         String currentUserId = mAuth.getCurrentUser().getUid();
 
@@ -53,13 +67,42 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         if (fromUser.equals(currentUserId)){
 
-            holder.messageText.setBackgroundColor(Color.WHITE);
-            holder.messageText.setTextColor(Color.BLACK);
+            userDB.child(currentUserId).child("thumb_image").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String image = dataSnapshot.getValue().toString();
+
+                    Picasso.with(holder.itemView.getContext()).load(image).placeholder(R.mipmap.ic_launcher).into(holder.profileImage);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            holder.messageText.setBackgroundResource(R.drawable.message_bubble_view_other);//Color.parseColor("#83CCCD"));
+            //holder.messageText.setTextColor(Color.WHITE);
+
 
         } else {
 
-            holder.messageText.setBackgroundColor(Color.BLACK);
-            holder.messageText.setTextColor(Color.WHITE);
+            userDB.child(fromUser).child("thumb_image").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String image = dataSnapshot.getValue().toString();
+
+                    Picasso.with(holder.itemView.getContext()).load(image).placeholder(R.mipmap.ic_launcher).into(holder.profileImage);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            holder.messageText.setBackgroundResource(R.drawable.message_bubble_view);// Color.parseColor("#F8D255"));
+            //holder.messageText.setTextColor(Color.WHITE);
 
         }
 

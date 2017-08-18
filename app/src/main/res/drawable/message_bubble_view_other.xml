@@ -2,7 +2,8 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android">
     <corners
-        android:radius="25dp"/>
+        android:radius="5dp"/>
+
 
     <padding
         android:left="4dp"

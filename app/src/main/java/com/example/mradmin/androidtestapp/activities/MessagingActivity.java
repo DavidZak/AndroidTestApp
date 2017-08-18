@@ -84,6 +84,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         messageView.setHasFixedSize(true);
         messageView.setLayoutManager(linearLayoutManager);
+        linearLayoutManager.setStackFromEnd(true);
 
         messageView.setAdapter(messageAdapter);
         
@@ -168,6 +169,7 @@ public class MessagingActivity extends AppCompatActivity {
 
     private void loadMessages() {
 
+        rootRef.child("Messages").keepSynced(true);
         rootRef.child("Messages").child(currentUserId).child(userId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
