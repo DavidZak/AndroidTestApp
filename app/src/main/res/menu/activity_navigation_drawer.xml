@@ -21,6 +21,11 @@
             android:title="Edit Profile" />
 
         <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/ic_mode_edit_black_24dp"
+            android:title="Blog" />
+
+        <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
             android:title="Share" />

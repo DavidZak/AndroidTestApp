@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +27,7 @@ import com.example.mradmin.androidtestapp.Constants;
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.entities.User;
+import com.example.mradmin.androidtestapp.fragments.BlogFragment;
 import com.example.mradmin.androidtestapp.fragments.ContactsFragment;
 import com.example.mradmin.androidtestapp.fragments.DialoguesFragment;
 import com.example.mradmin.androidtestapp.fragments.EditProfileFragment;
@@ -305,6 +308,12 @@ public class NavigationActivity extends AppCompatActivity
             fab.setVisibility(View.INVISIBLE);
 
             fragment = new EditProfileFragment();
+
+        } else if (id == R.id.nav_blog) {
+
+            fab.setVisibility(View.INVISIBLE);
+
+            fragment = new BlogFragment();
         }
 
         if (fragment != null) {
