@@ -39,6 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,14 +61,7 @@ public class NavigationActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-        });
+        fab.setVisibility(View.INVISIBLE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -74,11 +69,11 @@ public class NavigationActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         mAuth = ((FirebaseApplication) getApplication()).getFirebaseAuth();
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
         userDB = ((FirebaseApplication)getApplication()).getFirebaseDatabase().child(user.getUid());
 
 
@@ -89,9 +84,58 @@ public class NavigationActivity extends AppCompatActivity
         //for header name text
         View hView = navigationView.getHeaderView(0);
         TextView nav_user = (TextView) hView.findViewById(R.id.nav_avatar_name);
+
+        final CircleImageView nav_user_image = (CircleImageView)hView.findViewById(R.id.imageViewHeaderAvatar);
+
         if (user != null) {
             nav_user.setText(user.getDisplayName());
+
+            userDB.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    final String image = dataSnapshot.child("image").getValue().toString();
+                    String thumb = dataSnapshot.child("thumb_image").getValue().toString();
+
+                    if (!image.equals("default")) {
+
+                        Picasso.with(NavigationActivity.this).load(thumb).networkPolicy(NetworkPolicy.OFFLINE)
+                                .placeholder(R.mipmap.ic_launcher).into(nav_user_image, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+
+                                Picasso.with(NavigationActivity.this).load(image).placeholder(R.mipmap.ic_launcher).into(nav_user_image);
+
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+
+                navigationView.getMenu().getItem(0).setChecked(true);
+                onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+            }
+        });
 
 
         //for header image avatar
@@ -108,6 +152,8 @@ public class NavigationActivity extends AppCompatActivity
         logOutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("------- log out -------");
+
+                userDB.child("online").setValue(ServerValue.TIMESTAMP);
 
                 ((FirebaseApplication) getApplication()).getFirebaseAuth().signOut();
                 startActivity(new Intent(NavigationActivity.this, FirstActivity.class));
@@ -183,9 +229,17 @@ public class NavigationActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            fab.setVisibility(View.INVISIBLE);
+
             fragment = new SettingsFragment();
+
         } else if (id == R.id.action_contacts) {
+
+            fab.setVisibility(View.INVISIBLE);
+
             fragment = new ContactsFragment();
+
         }
 
         if (fragment != null) {
@@ -208,28 +262,47 @@ public class NavigationActivity extends AppCompatActivity
         android.support.v4.app.Fragment fragment = null;
 
         if (id == R.id.nav_camera) {
+
+            fab.setVisibility(View.INVISIBLE);
+
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
+            fab.setVisibility(View.INVISIBLE);
+
         } else if (id == R.id.nav_slideshow) {
+
+            fab.setVisibility(View.INVISIBLE);
 
         } else if (id == R.id.nav_manage) {
 
+            fab.setVisibility(View.INVISIBLE);
+
         } else if (id == R.id.nav_share) {
 
+            fab.setVisibility(View.INVISIBLE);
+
         } else if (id == R.id.nav_friends) {
+
+            fab.setVisibility(View.VISIBLE);
 
             fragment = new FriendsFragment();
 
         } else if (id == R.id.nav_settings) {
 
+            fab.setVisibility(View.INVISIBLE);
+
             fragment = new SettingsFragment();
 
         } else if (id == R.id.nav_dialogues) {
 
+            fab.setVisibility(View.INVISIBLE);
+
             fragment = new DialoguesFragment();
 
         } else if (id == R.id.nav_edit_profile) {
+
+            fab.setVisibility(View.INVISIBLE);
 
             fragment = new EditProfileFragment();
         }
