@@ -78,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title").toString(); // Now, message has Drawer title
         //setTitle(title);
 
-
         profileToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(profileToolbar);
 

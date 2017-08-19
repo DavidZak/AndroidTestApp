@@ -39,7 +39,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MessagingActivity"
-            android:parentActivityName=".activities.NavigationActivity" />
+            android:parentActivityName=".activities.NavigationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.FirstActivity"
             android:label="@string/title_activity_first"
