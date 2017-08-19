@@ -1,4 +1,12 @@
 <resources>
+
+    <string-array name="blog_variants">
+        <item>All contacts</item>
+        <item>Friends</item>
+        <item>New posts</item>
+        <item>My posts</item>
+    </string-array>
+
     <string name="app_name">Messenger</string>
     <string name="title_activity_login_activity">Sign in</string>
 

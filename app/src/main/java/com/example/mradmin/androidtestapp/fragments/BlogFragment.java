@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.mradmin.androidtestapp.FirebaseApplication;
@@ -20,12 +22,15 @@ import com.example.mradmin.androidtestapp.TimeSinceAgo;
 import com.example.mradmin.androidtestapp.activities.EditPostActivity;
 import com.example.mradmin.androidtestapp.activities.ProfileActivity;
 import com.example.mradmin.androidtestapp.entities.Friend;
+import com.example.mradmin.androidtestapp.entities.Message;
 import com.example.mradmin.androidtestapp.entities.Post;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +46,7 @@ public class BlogFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference blogDB;
     private DatabaseReference usersDB;
+    private DatabaseReference rootRef;
 
     private ImageButton buttonCreatePost;
 
@@ -54,14 +60,15 @@ public class BlogFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blog, container, false);
 
-
         listView = (RecyclerView) rootView.findViewById(R.id.blogListView);
         listView.setHasFixedSize(true);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        rootRef = FirebaseDatabase.getInstance().getReference();
+
         mAuth = ((FirebaseApplication) getActivity().getApplication()).getFirebaseAuth();
         currentUserId = mAuth.getCurrentUser().getUid();
-        blogDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseBlogDatabase().child(currentUserId);
+        blogDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseBlogDatabase();
         blogDB.keepSynced(true);
         usersDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseDatabase();
         usersDB.keepSynced(true);
@@ -71,15 +78,19 @@ public class BlogFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Map map = new HashMap();
-                map.put("title", "title");
-                map.put("description", "desc");
-
-                blogDB.child(currentUserId).setValue(map);
-                //startActivity(new Intent(getActivity(), EditPostActivity.class));
+                startActivity(new Intent(getActivity(), EditPostActivity.class));
 
             }
         });
+
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.blogSpinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.blog_variants, R.layout.custom_spinner_layout);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
         return rootView;
     }
@@ -97,19 +108,25 @@ public class BlogFragment extends Fragment {
             @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, Post model, int position) {
 
-                //viewHolder.setDate(model.getDate());
                 viewHolder.setName(model.getTitle());
                 viewHolder.setDescription(model.getDescription());
+                //viewHolder.setTime(model.getTime());                     //------------------ Need to work
 
-                //final String listUserId = getRef(position).getKey();
-
-                usersDB.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                blogDB.addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                        String userID = dataSnapshot.child("user_id").getValue().toString();
 
-                        viewHolder.setUserImage(userThumb, getContext());
+                        usersDB.child(userID).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                String name = dataSnapshot.child("name").getValue().toString();
+                                viewHolder.setUserName(name);
+
+                                String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                                viewHolder.setUserImage(userThumb, getContext());
 
                         /*viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -123,6 +140,28 @@ public class BlogFragment extends Fragment {
                             }
                         });*/
 
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                     }
 
                     @Override
@@ -130,6 +169,7 @@ public class BlogFragment extends Fragment {
 
                     }
                 });
+
             }
         };
 
@@ -178,6 +218,25 @@ public class BlogFragment extends Fragment {
             Picasso.with(context).load(image).placeholder(R.mipmap.ic_launcher).into(userImageView);
 
         }
+
+        public void setUserName(String name) {
+
+            TextView userName = (TextView) mView.findViewById(R.id.textViewUserName);
+
+            userName.setText(name);
+
+        }
+
+        /*public void setTime(String time) {
+
+            TextView timeView = (TextView) mView.findViewById(R.id.textViewPostTime);
+
+            TimeSinceAgo timeSinceAgo = new TimeSinceAgo();
+            long lastTime = Long.parseLong(time);
+            String lastSeen = timeSinceAgo.getTimeAgo(lastTime);
+
+            timeView.setText(lastSeen);
+        }*/
 
     }
 

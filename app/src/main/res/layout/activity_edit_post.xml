@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mradmin.androidtestapp.activities.EditPostActivity">
+    android:background="@color/colorBackground">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewSelectPostImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            android:text="Tap to select an image"
+            android:gravity="center"
+            android:background="@drawable/side_nav_bar"
+            android:elevation="4dp"
+            android:textColor="@color/colorTextSecond"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textViewPostName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Change post title here..."
+            android:textColorHint="@color/colorBackgroundLight"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextSecond"
+            android:background="@drawable/side_nav_bar"
+            android:elevation="3dp"
+            android:padding="8dp"
+            android:layout_margin="8dp"/>
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/blogTextViewPostDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorTextSecond"
+            android:background="@drawable/side_nav_bar"
+            android:elevation="3dp"
+            android:hint="Change post description here..."
+            android:textColorHint="@color/colorBackgroundLight"/>
+
+        <Button
+            android:id="@+id/buttonSavePost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/button_login"
+            android:drawableRight="@drawable/ic_add_contact_24dp"
+            android:drawableTint="@color/colorTextFirst"
+            android:enabled="true"
+            android:paddingLeft="20dp"
+            android:text="Publish this post"
+            android:textColor="@color/colorTextFirst" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

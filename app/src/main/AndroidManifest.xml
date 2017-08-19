@@ -57,7 +57,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.EditPostActivity"></activity>
+        <activity android:name=".activities.EditPostActivity"
+            android:parentActivityName=".activities.NavigationActivity"></activity>
     </application>
 
 </manifest>

@@ -131,11 +131,13 @@ public class NavigationActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
+                Snackbar.make(view, "Create new post", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
 
-                navigationView.getMenu().getItem(0).setChecked(true);
-                onNavigationItemSelected(navigationView.getMenu().getItem(0));
+                //navigationView.getMenu().getItem(0).setChecked(true);
+                //onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+                startActivity(new Intent(NavigationActivity.this, EditPostActivity.class));
 
             }
         });
@@ -311,7 +313,7 @@ public class NavigationActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_blog) {
 
-            fab.setVisibility(View.INVISIBLE);
+            fab.setVisibility(View.VISIBLE);
 
             fragment = new BlogFragment();
         }

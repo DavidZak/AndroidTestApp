@@ -34,9 +34,10 @@
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="128dp"
+                android:layout_height="84dp"
                 android:layout_margin="16dp"
-                android:background="@drawable/status_text__stroke">
+                android:background="@drawable/side_nav_bar"
+                android:elevation="3dp">
 
                 <EditText
                     android:id="@+id/edit_profile_status"

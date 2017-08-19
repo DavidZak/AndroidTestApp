@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/side_nav_bar"
     android:layout_margin="8dp"
-    android:padding="8dp"
     android:elevation="4dp">
 
     <LinearLayout
@@ -17,7 +16,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:elevation="4dp"
+            android:padding="8dp"
+            android:background="@drawable/side_nav_bar">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/blogImageViewContactImage"
@@ -30,55 +32,85 @@
                 android:gravity="center" />
 
             <TextView
-                android:id="@+id/textViewPostName"
-                android:layout_width="match_parent"
+                android:id="@+id/textViewUserName"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Post title"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="48dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="Username"
+                android:layout_margin="8dp"
                 android:singleLine="true"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:textColor="@color/colorTextSecond" />
+
+            <TextView
+                android:id="@+id/textViewPostTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="11:33"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:layout_weight="1"
                 android:textColor="@color/colorTextSecond" />
 
         </LinearLayout>
 
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorBackgroundLight"/>
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/blogTextViewDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textColor="@color/colorTextSecond"
-            android:text="Post description" />
+            <ImageView
+                android:id="@+id/postImageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher_1"
+                android:layout_margin="8dp"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorBackgroundLight"/>
+            <TextView
+                android:id="@+id/textViewPostName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post title"
+                android:layout_margin="4dp"
+                android:padding="4dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorTextSecond" />
+
+            <TextView
+                android:id="@+id/blogTextViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:textColor="@color/colorTextSecond"
+                android:text="Post description" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:orientation="horizontal">
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:background="@drawable/side_nav_bar"
+            android:elevation="4dp">
 
             <ImageButton
+                android:id="@+id/button_share_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_menu_share"
                 android:layout_marginRight="8dp"/>
 
             <TextView
+                android:id="@+id/post_likes_count"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -89,6 +121,7 @@
                 android:textColor="@color/colorTextSecond"/>
 
             <ImageButton
+                android:id="@+id/button_like_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_thumb_up_black_24dp"
