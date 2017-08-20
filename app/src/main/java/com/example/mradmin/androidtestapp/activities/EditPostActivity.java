@@ -17,10 +17,12 @@ import com.example.mradmin.androidtestapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
@@ -88,36 +90,56 @@ public class EditPostActivity extends AppCompatActivity {
 
                 System.out.println("publishing post");
 
-                String curUserUID = ((FirebaseApplication) getApplication()).getFirebaseAuth().getCurrentUser().getUid();
+                final String curUserUID = ((FirebaseApplication) getApplication()).getFirebaseAuth().getCurrentUser().getUid();
 
-                String currentUserRef = "Blog";
+                final String currentUserRef = "Blog";
 
                 DatabaseReference postPush = rootRef.child("Blog").push();
 
-                String pushId = postPush.getKey();
+                final String pushId = postPush.getKey();
 
-                Map valueMap = new HashMap();
-                valueMap.put("title", textInputTitle.getText().toString());
-                valueMap.put("description", textInputDescription.getText().toString());
-                valueMap.put("time", ServerValue.TIMESTAMP);
-                valueMap.put("user_id", curUserUID);
-                valueMap.put("likes_count", 0);
 
-                Map postMap = new HashMap();
-                postMap.put(currentUserRef + "/" + pushId, valueMap);
-
-                rootRef.updateChildren(postMap, new DatabaseReference.CompletionListener() {
+                userDB.child(curUserUID).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if (databaseError != null) {
+                        Map valueMap = new HashMap();
+                        valueMap.put("title", textInputTitle.getText().toString());
+                        valueMap.put("description", textInputDescription.getText().toString());
+                        valueMap.put("time", ServerValue.TIMESTAMP);
+                        valueMap.put("user_id", curUserUID);
+                        valueMap.put("likes_count", 0);
 
-                            Log.d("CHAT_LOG", databaseError.getMessage().toString());
+                        String name = dataSnapshot.child("name").getValue().toString();
+                        String image = dataSnapshot.child("thumb_image").getValue().toString();
 
-                        }
+                        valueMap.put("user_name", name);
+                        valueMap.put("user_image", image);
+
+                        Map postMap = new HashMap();
+                        postMap.put(currentUserRef + "/" + pushId, valueMap);
+
+                        rootRef.updateChildren(postMap, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                if (databaseError != null) {
+
+                                    Log.d("CHAT_LOG", databaseError.getMessage().toString());
+
+                                }
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
+
+
             }
         });
 

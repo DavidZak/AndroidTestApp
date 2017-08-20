@@ -114,6 +114,8 @@ public class BlogFragment extends Fragment {
                 viewHolder.setDescription(model.getDescription());
                 viewHolder.setTime(model.getTime());                     //------------------ Need to work
 
+                viewHolder.setUserName(model.getUserName());
+                viewHolder.setUserImage(model.getUserImage(), getContext());
                 /*viewHolder.setLike(model.getLikesCount());
 
                 ImageButton buttonLike = (ImageButton) viewHolder.mView.findViewById(R.id.button_like_post);
@@ -128,7 +130,7 @@ public class BlogFragment extends Fragment {
                     }
                 });*/
 
-                blogDB.addChildEventListener(new ChildEventListener() {
+                /*blogDB.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
 
@@ -144,7 +146,7 @@ public class BlogFragment extends Fragment {
                                 String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
                                 viewHolder.setUserImage(userThumb, getContext());
 
-                        /*viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        *//*viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 
@@ -154,7 +156,7 @@ public class BlogFragment extends Fragment {
                                 startActivity(profileIntent);
 
                             }
-                        });*/
+                        });*//*
 
 
                             }
@@ -185,7 +187,7 @@ public class BlogFragment extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                });*/
 
             }
         };
@@ -204,13 +206,6 @@ public class BlogFragment extends Fragment {
             mView = itemView;
 
         }
-
-        /*public void setDate(String date) {
-
-            TextView dateTextView = (TextView) mView.findViewById(R.id.textViewFriendLastTime);
-            dateTextView.setText("Last seen " + date);
-
-        }*/
 
         public void setName(String name) {
 
@@ -255,13 +250,13 @@ public class BlogFragment extends Fragment {
             timeView.setText(lastSeen);
         }
 
-        public void setLike(int like){
+        /*public void setLike(int like){
 
             TextView likeText = (TextView) mView.findViewById(R.id.text_view_post_likes_count);
 
             likeText.setText(String.valueOf(like));
 
-        }
+        }*/
 
     }
 

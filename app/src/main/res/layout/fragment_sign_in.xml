@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:background="@drawable/button_login"
+            android:background="@drawable/button_ripple_effect"
             android:drawableRight="@drawable/ic_arrow_forward_24dp"
             android:drawableTint="@color/colorTextFirst"
             android:enabled="true"
