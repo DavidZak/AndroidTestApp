@@ -114,7 +114,7 @@ public class BlogFragment extends Fragment {
                 viewHolder.setDescription(model.getDescription());
                 viewHolder.setTime(model.getTime());                     //------------------ Need to work
 
-                viewHolder.setLike(model.getLikesCount());
+                /*viewHolder.setLike(model.getLikesCount());
 
                 ImageButton buttonLike = (ImageButton) viewHolder.mView.findViewById(R.id.button_like_post);
                 buttonLike.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class BlogFragment extends Fragment {
                         viewHolder.setLike(likesCount);
 
                     }
-                });
+                });*/
 
                 blogDB.addChildEventListener(new ChildEventListener() {
                     @Override
