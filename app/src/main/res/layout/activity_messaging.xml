@@ -52,11 +52,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorTextSecond"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:layout_weight="1"
                 android:inputType="text"
                 android:backgroundTint="@color/colorIcon"
                 android:hint="Input message"
-                android:textColorHint="@color/colorTextSecond"
+                android:textColorHint="@color/colorHint"
                 />
 
             <ImageButton

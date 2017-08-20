@@ -24,20 +24,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColorHint="@color/colorTextSecond">
+            android:textColorHint="@color/colorHint"
+            android:backgroundTint="@color/colorIcon">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/messageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
-                android:textColorHint="@color/colorTextSecond"
+                android:textColorHint="@color/colorHint"
                 android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/colorTextSecond"
                 android:inputType="textEmailAddress"
-                android:backgroundTint="@color/colorBackgroundLight"
+                android:backgroundTint="@color/colorHint"
                 android:drawableRight="@drawable/ic_perm_identity_24dp"
-                android:drawableTint="@color/colorIcon"/>
+                android:drawableTint="@color/colorIcon" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -45,19 +47,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColorHint="@color/colorTextSecond"
-            app:passwordToggleTint="@color/colorIcon">
+            android:textColorHint="@color/colorHint"
+            android:backgroundTint="@color/colorIcon"
+            app:passwordToggleTint="@color/colorHint">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/messageEditTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorBackgroundLight"
+                android:backgroundTint="@color/colorHint"
                 android:hint="@string/hint_password"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:textColor="@color/colorTextSecond"
-                android:textColorHint="@color/colorTextSecond" />
+                android:textColorHint="@color/colorHint" />
         </android.support.design.widget.TextInputLayout>
 
         <Button

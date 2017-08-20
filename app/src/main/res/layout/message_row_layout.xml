@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="64dp">
+    android:layout_marginRight="128dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewContactImage"
@@ -17,7 +17,10 @@
 
     <TextView
         android:layout_margin="2dp"
-        android:padding="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="4dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -26,7 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:layout_alignParentTop="true"
-                android:src="@mipmap/ic_launcher_1"
                 android:scaleType="centerCrop"/>
 
             <TextView

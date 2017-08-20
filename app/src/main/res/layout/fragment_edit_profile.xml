@@ -45,8 +45,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="2dp"
                     android:hint="Type your status here..."
-                    android:textColorHint="@color/colorTextSecond"
-                    android:backgroundTint="@color/colorBackground"
+                    android:textColorHint="@color/colorHint"
+                    android:backgroundTint="@color/colorBackgroundLight"
                     android:textColor="@color/colorTextSecond"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
