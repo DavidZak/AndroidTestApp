@@ -23,10 +23,10 @@ public class MainActivity extends AwesomeSplash {
 
         //configSplash.setOriginalHeight(400);
         //configSplash.setOriginalWidth(400);
-        configSplash.setAnimPathStrokeDrawingDuration(3000);
-        configSplash.setPathSplashStrokeSize(3);
+        configSplash.setAnimPathStrokeDrawingDuration(2000);
+        configSplash.setPathSplashStrokeSize(2);
         //configSplash.setPathSplashFillColor();
-        configSplash.setAnimPathFillingDuration(3000);
+        configSplash.setAnimPathFillingDuration(2000);
         //configSplash.setPathSplashFillColor();
 
         configSplash.setTitleSplash("");

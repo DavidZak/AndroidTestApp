@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/colorButtonEnabled"
-            app:tabSelectedTextColor="@color/colorButtonEnabled" />
+            app:tabSelectedTextColor="@color/colorButtonEnabled"
+            app:tabBackground="@drawable/tab_selected"/>
 
     </android.support.design.widget.AppBarLayout>
 
