@@ -10,7 +10,17 @@ public class Post {
     private String description;
     private String userImage;
     private String userName;
-    private String time;
+    private long time;
+    private int likesCount;
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
+
 
     public String getUserName() {
         return userName;
@@ -20,11 +30,11 @@ public class Post {
         this.userName = userName;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
@@ -55,11 +65,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(String title, String description, String userImage, String userName, String time) {
+    public Post(String title, String description, String userImage, String userName, long time, int likesCount) {
         this.title = title;
         this.description = description;
         this.userImage = userImage;
         this.userName = userName;
         this.time = time;
+        this.likesCount = likesCount;
     }
 }

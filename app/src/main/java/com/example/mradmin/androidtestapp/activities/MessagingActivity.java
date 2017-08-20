@@ -140,7 +140,7 @@ public class MessagingActivity extends AppCompatActivity {
                 }
 
                 profileName.setText(displayName);   //-------------------------------------------for toolbar title
-                Picasso.with(MessagingActivity.this).load(image).placeholder(R.mipmap.ic_launcher_1).into(imageViewAvatar);
+                Picasso.with(MessagingActivity.this).load(image).placeholder(R.mipmap.ic_launcher).into(imageViewAvatar);
 
             }
 
@@ -178,7 +178,6 @@ public class MessagingActivity extends AppCompatActivity {
         buttonSendMessage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-
                 String message = editTextMessage.getText().toString();
 
                 String currentUserRef = "Messages/" + currentUserId + "/" + userId;
@@ -214,6 +213,8 @@ public class MessagingActivity extends AppCompatActivity {
 
                     }
                 });
+
+                messageView.setVerticalScrollbarPosition(messageList.size() - 1);
 
             }
         });

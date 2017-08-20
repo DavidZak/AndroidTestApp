@@ -33,6 +33,9 @@ import static java.security.AccessController.getContext;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
+    private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+    private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
+
     private List<Message> messageList;
     private FirebaseAuth mAuth;
     private DatabaseReference userDB;
@@ -49,11 +52,40 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public MessageAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.message_row_layout, parent, false);
+       // View v = LayoutInflater.from(parent.getContext())
+        //        .inflate(R.layout.message_row_layout, parent, false);
+
+        //return new MessageViewHolder(v);
+
+        View v = null;
+
+        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.message_row_layout, parent, false);
+        } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.message_row_layout_other, parent, false);
+        }
 
         return new MessageViewHolder(v);
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+
+        String currentUserId = mAuth.getCurrentUser().getUid();
+
+        Message message = messageList.get(position);
+
+        String fromUser = message.getFrom();
+
+        if (fromUser.equals(currentUserId)) {
+            // If the current user is the sender of the message
+            return VIEW_TYPE_MESSAGE_SENT;
+        } else {
+            // If some other user sent the message
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
 
     @Override
@@ -70,6 +102,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             userDB.child(currentUserId).child("thumb_image").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     String image = dataSnapshot.getValue().toString();
 
                     Picasso.with(holder.itemView.getContext()).load(image).placeholder(R.mipmap.ic_launcher).into(holder.profileImage);
@@ -81,7 +114,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 }
             });
 
-            holder.messageText.setBackgroundResource(R.drawable.message_bubble_view_other);//Color.parseColor("#83CCCD"));
+            //holder.messageText.setBackgroundResource(R.drawable.message_bubble_view_other);//Color.parseColor("#83CCCD"));
             //holder.messageText.setTextColor(Color.WHITE);
 
 
@@ -90,6 +123,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             userDB.child(fromUser).child("thumb_image").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     String image = dataSnapshot.getValue().toString();
 
                     Picasso.with(holder.itemView.getContext()).load(image).placeholder(R.mipmap.ic_launcher).into(holder.profileImage);
@@ -101,7 +135,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 }
             });
 
-            holder.messageText.setBackgroundResource(R.drawable.message_bubble_view);// Color.parseColor("#F8D255"));
+            //holder.messageText.setBackgroundResource(R.drawable.message_bubble_view);// Color.parseColor("#F8D255"));
             //holder.messageText.setTextColor(Color.WHITE);
 
         }

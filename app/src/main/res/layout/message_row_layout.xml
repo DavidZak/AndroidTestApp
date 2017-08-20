@@ -21,10 +21,10 @@
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/message_bubble_view"
+        android:background="@mipmap/message_bubble_1"
         android:textColor="@color/colorTextFirst"
         android:layout_toRightOf="@id/imageViewContactImage"
-        tools:text="Messaghfgjfgjfgjhgjghjghddsfgdsgdsfdsdfsfdsfdsfdsfdsfdsadsadadsadsadsadasdsadsa"
+        tools:text="Message"
         android:textStyle="bold"/>
 
 </RelativeLayout>

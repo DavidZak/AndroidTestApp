@@ -290,7 +290,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             currentState = "not_friends";
                                             buttonFriendRequest.setText("Send friend request");
 
-                                            Toast.makeText(ProfileActivity.this,"REQUEST SENT",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(ProfileActivity.this,"REQUEST CANCELED",Toast.LENGTH_LONG).show();
 
                                         }
                                     });

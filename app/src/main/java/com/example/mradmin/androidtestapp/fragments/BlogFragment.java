@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mradmin.androidtestapp.FirebaseApplication;
 import com.example.mradmin.androidtestapp.R;
@@ -106,15 +108,29 @@ public class BlogFragment extends Fragment {
                 blogDB
         ) {
             @Override
-            protected void populateViewHolder(final PostViewHolder viewHolder, Post model, int position) {
+            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, int position) {
 
                 viewHolder.setName(model.getTitle());
                 viewHolder.setDescription(model.getDescription());
-                //viewHolder.setTime(model.getTime());                     //------------------ Need to work
+                viewHolder.setTime(model.getTime());                     //------------------ Need to work
+
+                viewHolder.setLike(model.getLikesCount());
+
+                ImageButton buttonLike = (ImageButton) viewHolder.mView.findViewById(R.id.button_like_post);
+                buttonLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        int likesCount = model.getLikesCount() + 1;
+
+                        viewHolder.setLike(likesCount);
+
+                    }
+                });
 
                 blogDB.addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
 
                         String userID = dataSnapshot.child("user_id").getValue().toString();
 
@@ -139,6 +155,7 @@ public class BlogFragment extends Fragment {
 
                             }
                         });*/
+
 
                             }
 
@@ -227,16 +244,24 @@ public class BlogFragment extends Fragment {
 
         }
 
-        /*public void setTime(String time) {
+        public void setTime(long time) {
 
             TextView timeView = (TextView) mView.findViewById(R.id.textViewPostTime);
 
             TimeSinceAgo timeSinceAgo = new TimeSinceAgo();
-            long lastTime = Long.parseLong(time);
-            String lastSeen = timeSinceAgo.getTimeAgo(lastTime);
+            //long lastTime = Long.parseLong(time);
+            String lastSeen = timeSinceAgo.getTimeAgo(time);
 
             timeView.setText(lastSeen);
-        }*/
+        }
+
+        public void setLike(int like){
+
+            TextView likeText = (TextView) mView.findViewById(R.id.text_view_post_likes_count);
+
+            likeText.setText(String.valueOf(like));
+
+        }
 
     }
 

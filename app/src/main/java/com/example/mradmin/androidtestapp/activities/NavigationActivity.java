@@ -313,7 +313,7 @@ public class NavigationActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_blog) {
 
-            fab.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.INVISIBLE);
 
             fragment = new BlogFragment();
         }

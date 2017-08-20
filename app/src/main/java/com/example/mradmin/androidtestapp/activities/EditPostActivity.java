@@ -99,8 +99,9 @@ public class EditPostActivity extends AppCompatActivity {
                 Map valueMap = new HashMap();
                 valueMap.put("title", textInputTitle.getText().toString());
                 valueMap.put("description", textInputDescription.getText().toString());
-                //valueMap.put("time", ServerValue.TIMESTAMP);
+                valueMap.put("time", ServerValue.TIMESTAMP);
                 valueMap.put("user_id", curUserUID);
+                valueMap.put("likes_count", 0);
 
                 Map postMap = new HashMap();
                 postMap.put(currentUserRef + "/" + pushId, valueMap);
