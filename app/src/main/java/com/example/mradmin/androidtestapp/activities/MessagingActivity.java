@@ -27,6 +27,7 @@ import com.example.mradmin.androidtestapp.R;
 import com.example.mradmin.androidtestapp.TimeSinceAgo;
 import com.example.mradmin.androidtestapp.entities.Message;
 import com.example.mradmin.androidtestapp.entities.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -59,6 +60,8 @@ public class MessagingActivity extends AppCompatActivity {
     private String userId;
 
     private DatabaseReference userDB;
+
+    private DatabaseReference notificationDB;
 
     private RecyclerView messageView;
 
@@ -108,6 +111,8 @@ public class MessagingActivity extends AppCompatActivity {
         currentUserId = mAuth.getCurrentUser().getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
         userId = getIntent().getStringExtra("user_id");
+
+        notificationDB = ((FirebaseApplication)getApplication()).getNotificationsDatabase();
 
         userDB = ((FirebaseApplication)getApplication()).getFirebaseDatabase();
         userDB.child(userId).addValueEventListener(new ValueEventListener() {
@@ -215,6 +220,14 @@ public class MessagingActivity extends AppCompatActivity {
                 });
 
                 messageView.setVerticalScrollbarPosition(messageList.size() - 1);
+
+                //------------- NEED CHANGE (FOR MESSAGE NOTIFICATIONS)
+
+                HashMap<String, String> notificationData = new HashMap<String, String>();
+                notificationData.put("from", currentUserId);
+                notificationData.put("type", "request");
+
+                notificationDB.child(userId).push().setValue(notificationData);
 
             }
         });
