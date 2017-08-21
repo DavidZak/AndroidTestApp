@@ -75,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        String title = getIntent().getStringExtra("title").toString(); // Now, message has Drawer title
+        String title = getIntent().getStringExtra("user_id").toString(); // Now, message has Drawer title
         //setTitle(title);
 
         profileToolbar = (Toolbar) findViewById(R.id.toolbar);
