@@ -31,9 +31,10 @@
             android:orientation="horizontal"
             android:gravity="bottom"
             android:layout_weight="0"
-            android:layout_marginTop="2dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:background="@drawable/side_nav_bar"
-            android:elevation="2dp">
+            android:elevation="4dp">
 
             <ImageButton
                 android:id="@+id/button_attach_file"
@@ -67,7 +68,7 @@
                 android:background="@drawable/ic_menu_send"
                 android:backgroundTint="@color/colorIcon"
                 android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"/>
+                android:layout_marginLeft="8dp" />
 
         </LinearLayout>
 

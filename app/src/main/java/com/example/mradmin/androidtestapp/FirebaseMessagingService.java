@@ -3,6 +3,8 @@ package com.example.mradmin.androidtestapp;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 
@@ -25,11 +27,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         String fromUserId = remoteMessage.getData().get("from_user_id");
 
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher_app)
                         .setContentTitle(notificationTitle)
-                        .setContentText(notificationMessage);
+                        .setContentText(notificationMessage)
+                        .setSound(soundUri);
 
         Intent resultIntent = new Intent(clickAction);
         resultIntent.putExtra("user_id", fromUserId);
