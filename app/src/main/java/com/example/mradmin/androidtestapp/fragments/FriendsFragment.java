@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -149,7 +150,7 @@ public class FriendsFragment extends Fragment {
 
             CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.imageViewFriendImage);
 
-            Picasso.with(context).load(image).placeholder(R.mipmap.ic_launcher).into(userImageView);
+            Picasso.with(context).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.mipmap.ic_launcher).into(userImageView);
 
         }
 

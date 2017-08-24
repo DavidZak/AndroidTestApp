@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_blog"
             android:icon="@drawable/ic_mode_edit_black_24dp"
@@ -18,6 +19,11 @@
             android:title="Friends" />
 
         <item
+            android:id="@+id/nav_contacts"
+            android:icon="@drawable/ic_perm_identity_24dp"
+            android:title="Contacts" />
+
+        <item
             android:id="@+id/nav_edit_profile"
             android:icon="@drawable/ic_account_circle_24dp"
             android:title="Edit Profile" />
@@ -27,26 +33,6 @@
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Settings" />
 
-        <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Share" />
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
     </group>
 
 </menu>

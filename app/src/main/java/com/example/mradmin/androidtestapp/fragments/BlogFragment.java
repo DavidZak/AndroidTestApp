@@ -116,6 +116,7 @@ public class BlogFragment extends Fragment {
 
                 viewHolder.setUserName(model.getUserName());
                 viewHolder.setUserImage(model.getUserImage(), getContext());
+
                 /*viewHolder.setLike(model.getLikesCount());
 
                 ImageButton buttonLike = (ImageButton) viewHolder.mView.findViewById(R.id.button_like_post);
@@ -130,11 +131,14 @@ public class BlogFragment extends Fragment {
                     }
                 });*/
 
-                /*blogDB.addChildEventListener(new ChildEventListener() {
+                blogDB.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
 
                         String userID = dataSnapshot.child("user_id").getValue().toString();
+                        String image = dataSnapshot.child("post_image").getValue().toString();
+
+                        viewHolder.setPostImage(image, getContext());
 
                         usersDB.child(userID).addValueEventListener(new ValueEventListener() {
                             @Override
@@ -146,7 +150,7 @@ public class BlogFragment extends Fragment {
                                 String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
                                 viewHolder.setUserImage(userThumb, getContext());
 
-                        *//*viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        /*viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 
@@ -156,7 +160,7 @@ public class BlogFragment extends Fragment {
                                 startActivity(profileIntent);
 
                             }
-                        });*//*
+                        });*/
 
 
                             }
@@ -187,7 +191,7 @@ public class BlogFragment extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });*/
+                });
 
             }
         };
@@ -257,6 +261,13 @@ public class BlogFragment extends Fragment {
             likeText.setText(String.valueOf(like));
 
         }*/
+
+        public void setPostImage(String image, Context context){
+            ImageView postImage = (ImageView) mView.findViewById(R.id.postImageView);
+
+            Picasso.with(context).load(image).placeholder(R.mipmap.ic_launcher).into(postImage);
+
+        }
 
     }
 

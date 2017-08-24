@@ -56,4 +56,6 @@
     <string name="error_valid_email_password">Wrong Email or Password</string>
     <string name="text_hello">Hello,</string>
     <string name="text_title">Android Tutorials Hub</string>
+
+    <string name="sign_in_network_failure">Unexpected problem here</string>
 </resources>

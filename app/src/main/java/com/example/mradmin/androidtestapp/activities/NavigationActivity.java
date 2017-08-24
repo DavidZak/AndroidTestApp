@@ -3,10 +3,12 @@ package com.example.mradmin.androidtestapp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +58,10 @@ public class NavigationActivity extends AppCompatActivity
     FirebaseAuth mAuth;
     DatabaseReference userDB;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    private static int selectedItem = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,12 +87,45 @@ public class NavigationActivity extends AppCompatActivity
 
 
         //for set dialogues fragment aat startup
-        navigationView.getMenu().getItem(0).setChecked(true);
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        navigationView.getMenu().getItem(selectedItem).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(selectedItem));
 
         //for header name text
         View hView = navigationView.getHeaderView(0);
         TextView nav_user = (TextView) hView.findViewById(R.id.nav_avatar_name);
+
+
+        // ---------------------------------------------------------------------------------- FOR SWIPE REFRESH
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshNav);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBackgroundLight, R.color.colorButtonEnabled, R.color.colorIcon);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                swipeRefreshLayout.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+
+                if (selectedItem < 4) {
+
+                    Intent navIntent = new Intent(NavigationActivity.this, NavigationActivity.class);
+                    startActivity(navIntent);
+                    navigationView.getMenu().getItem(selectedItem).setChecked(true);
+                    onNavigationItemSelected(navigationView.getMenu().getItem(selectedItem));
+
+                }
+
+            }
+        });
+
+
+
 
         final CircleImageView nav_user_image = (CircleImageView)hView.findViewById(R.id.imageViewHeaderAvatar);
 
@@ -239,11 +278,15 @@ public class NavigationActivity extends AppCompatActivity
 
             fragment = new SettingsFragment();
 
+            selectedItem = 5;
+
         } else if (id == R.id.action_contacts) {
 
             fab.setVisibility(View.INVISIBLE);
 
             fragment = new ContactsFragment();
+
+            selectedItem = 3;
 
         }
 
@@ -266,38 +309,13 @@ public class NavigationActivity extends AppCompatActivity
 
         android.support.v4.app.Fragment fragment = null;
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_blog) {
 
             fab.setVisibility(View.INVISIBLE);
 
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            fragment = new BlogFragment();
 
-            fab.setVisibility(View.INVISIBLE);
-
-        } else if (id == R.id.nav_slideshow) {
-
-            fab.setVisibility(View.INVISIBLE);
-
-        } else if (id == R.id.nav_manage) {
-
-            fab.setVisibility(View.INVISIBLE);
-
-        } else if (id == R.id.nav_share) {
-
-            fab.setVisibility(View.INVISIBLE);
-
-        } else if (id == R.id.nav_friends) {
-
-            fab.setVisibility(View.VISIBLE);
-
-            fragment = new FriendsFragment();
-
-        } else if (id == R.id.nav_settings) {
-
-            fab.setVisibility(View.INVISIBLE);
-
-            fragment = new SettingsFragment();
+            selectedItem = 0;
 
         } else if (id == R.id.nav_dialogues) {
 
@@ -305,17 +323,40 @@ public class NavigationActivity extends AppCompatActivity
 
             fragment = new DialoguesFragment();
 
+            selectedItem = 1;
+
+        } else if (id == R.id.nav_friends) {
+
+            fab.setVisibility(View.VISIBLE);
+
+            fragment = new FriendsFragment();
+
+            selectedItem = 2;
+
+        } else if (id == R.id.nav_contacts) {
+
+            fab.setVisibility(View.INVISIBLE);
+
+            fragment = new ContactsFragment();
+
+            selectedItem = 3;
+
         } else if (id == R.id.nav_edit_profile) {
 
             fab.setVisibility(View.INVISIBLE);
 
             fragment = new EditProfileFragment();
 
-        } else if (id == R.id.nav_blog) {
+            selectedItem = 4;
+
+        } else if (id == R.id.nav_settings) {
 
             fab.setVisibility(View.INVISIBLE);
 
-            fragment = new BlogFragment();
+            fragment = new SettingsFragment();
+
+            selectedItem = 5;
+
         }
 
         if (fragment != null) {

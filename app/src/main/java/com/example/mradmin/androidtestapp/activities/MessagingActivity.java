@@ -115,6 +115,7 @@ public class MessagingActivity extends AppCompatActivity {
         notificationDB = ((FirebaseApplication)getApplication()).getNotificationsDatabase();
 
         userDB = ((FirebaseApplication)getApplication()).getFirebaseDatabase();
+        userDB.keepSynced(true);
         userDB.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

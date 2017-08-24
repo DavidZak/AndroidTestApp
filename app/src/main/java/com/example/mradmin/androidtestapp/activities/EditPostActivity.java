@@ -1,6 +1,8 @@
 package com.example.mradmin.androidtestapp.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -24,15 +26,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import id.zelory.compressor.Compressor;
+
 public class EditPostActivity extends AppCompatActivity {
 
-    private static final int GALLERY_PICK = 1;
+    private static final int GALLERY_PICK = 2;
 
     TextView imageViewPostImage;
+    ImageView postImage;
     TextInputEditText textInputTitle;
     TextInputEditText textInputDescription;
     Button buttonPublishPost;
@@ -45,6 +54,8 @@ public class EditPostActivity extends AppCompatActivity {
     FirebaseUser curUser;
     DatabaseReference currentDBUser;
 
+    String downloadUrl = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +64,7 @@ public class EditPostActivity extends AppCompatActivity {
         setTitle("New Post");
 
         imageViewPostImage = (TextView) findViewById(R.id.textViewSelectPostImage);
+        postImage = (ImageView) findViewById(R.id.imageViewPostImage);
         textInputTitle = (TextInputEditText) findViewById(R.id.textViewPostName);
         textInputDescription = (TextInputEditText) findViewById(R.id.blogTextViewPostDescription);
         buttonPublishPost = (Button) findViewById(R.id.buttonSavePost);
@@ -82,13 +94,14 @@ public class EditPostActivity extends AppCompatActivity {
 
         currentDBUser = userDB.child(curuserUID);
 
-        imageStorage = ((FirebaseApplication) getApplication()).getFirebaseStorage();
+        imageStorage = ((FirebaseApplication) getApplication()).getBlogStorage();
 
         buttonPublishPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 System.out.println("publishing post");
+
 
                 final String curUserUID = ((FirebaseApplication) getApplication()).getFirebaseAuth().getCurrentUser().getUid();
 
@@ -97,7 +110,6 @@ public class EditPostActivity extends AppCompatActivity {
                 DatabaseReference postPush = rootRef.child("Blog").push();
 
                 final String pushId = postPush.getKey();
-
 
                 userDB.child(curUserUID).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -109,6 +121,7 @@ public class EditPostActivity extends AppCompatActivity {
                         valueMap.put("time", ServerValue.TIMESTAMP);
                         valueMap.put("user_id", curUserUID);
                         valueMap.put("likes_count", 0);
+                        valueMap.put("post_image", downloadUrl);
 
                         String name = dataSnapshot.child("name").getValue().toString();
                         String image = dataSnapshot.child("thumb_image").getValue().toString();
@@ -145,4 +158,43 @@ public class EditPostActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+
+            CropImage.activity(imageUri)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+
+                Uri resultUri = result.getUri();
+
+                postImage.setImageURI(resultUri);
+
+                StorageReference filepath = imageStorage.child(resultUri.getLastPathSegment());
+
+                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                        if (task.isSuccessful()) {
+
+                            downloadUrl = task.getResult().getDownloadUrl().toString();
+                        }
+                    }
+                });
+
+            }
+        }
+    }
 }

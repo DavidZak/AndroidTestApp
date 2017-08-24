@@ -12,16 +12,28 @@
 
         <TextView
             android:id="@+id/textViewSelectPostImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
             android:layout_gravity="center"
-            android:text="Tap to select an image"
+            android:text="Tap here to select an image"
             android:gravity="center"
             android:background="@drawable/side_nav_bar"
-            android:elevation="4dp"
+            android:elevation="3dp"
             android:textColor="@color/colorHint"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <ImageView
+            android:id="@+id/imageViewPostImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_margin="8dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/side_nav_bar"
+            android:elevation="4dp" />
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/textViewPostName"

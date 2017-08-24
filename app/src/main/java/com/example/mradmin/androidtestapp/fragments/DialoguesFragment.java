@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -225,7 +226,7 @@ public class DialoguesFragment extends Fragment {
 
             CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.imageViewDialogueImage);
 
-            Picasso.with(context).load(image).placeholder(R.mipmap.ic_launcher).into(userImageView);
+            Picasso.with(context).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.mipmap.ic_launcher).into(userImageView);
 
         }
     }

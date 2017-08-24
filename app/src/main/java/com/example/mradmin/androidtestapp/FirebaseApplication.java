@@ -2,6 +2,7 @@ package com.example.mradmin.androidtestapp;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.util.Log;
 import com.example.mradmin.androidtestapp.activities.FirstActivity;
 import com.example.mradmin.androidtestapp.activities.NavigationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -49,6 +51,7 @@ public class FirebaseApplication extends Application {
     private DatabaseReference blogDB;
 
     private FirebaseStorage mStorage;
+    private FirebaseStorage blogStorage;
 
     public FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -82,6 +85,10 @@ public class FirebaseApplication extends Application {
 
     public StorageReference getFirebaseStorage() {
         return FirebaseStorage.getInstance().getReference().child("profile_images");
+    }
+
+    public StorageReference getBlogStorage() {
+        return FirebaseStorage.getInstance().getReference().child("blog_images");
     }
 
     @Override
@@ -202,6 +209,13 @@ public class FirebaseApplication extends Application {
     }
 
     public void addNewUser(final Context context, String email, String password, final String name) {
+
+        final ProgressDialog pd = new ProgressDialog(context);
+        pd.setTitle("Signing up");
+        pd.setMessage("Please wait");
+        pd.setCancelable(false);
+        pd.show();
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -223,11 +237,21 @@ public class FirebaseApplication extends Application {
                             Snackbar.make(((Activity) context).findViewById(R.id.scroll_view_sign_up), getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
 
                         }
+
+                        pd.dismiss();
+
                     }
                 });
     }
 
     public void loginUser(final Context context, String email, String password) {
+
+        final ProgressDialog pd = new ProgressDialog(context);
+        pd.setTitle("Signing in");
+        pd.setMessage("Please wait");
+        pd.setCancelable(false);
+        pd.show();
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -235,7 +259,8 @@ public class FirebaseApplication extends Application {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
                             //errorMessage.setText("Failed to login");
-                            Snackbar.make(((Activity) context).findViewById(R.id.nested_scroll_view_sign_in), getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).show();
+                            //Snackbar.make(((Activity) context).findViewById(R.id.nested_scroll_view_sign_in), getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(((Activity) context).findViewById(R.id.nested_scroll_view_sign_in), getString(R.string.sign_in_network_failure), Snackbar.LENGTH_LONG).show();
                         } else {
                             //checkUserExist(((Activity) context).getParent());
 
@@ -256,8 +281,8 @@ public class FirebaseApplication extends Application {
                                         }
                                     });
 
-
                         }
+                        pd.dismiss();
                     }
                 });
     }

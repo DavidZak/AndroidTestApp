@@ -1,11 +1,14 @@
 package com.example.mradmin.androidtestapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.DateFormat;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,13 +73,40 @@ public class ProfileActivity extends AppCompatActivity {
 
     public String title = "";
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        String title = getIntent().getStringExtra("user_id").toString(); // Now, message has Drawer title
+        final String title = getIntent().getStringExtra("user_id").toString(); // Now, message has Drawer title
         //setTitle(title);
+
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshProfile);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBackgroundLight, R.color.colorButtonEnabled, R.color.colorIcon);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                swipeRefreshLayout.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+
+                Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
+                intent.putExtra("user_id", title);
+                startActivity(intent);
+            }
+        });
+
+
 
         profileToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(profileToolbar);
@@ -115,6 +145,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
+                pd.setTitle("Declining");
+                pd.setMessage("Please wait");
+                pd.show();
+
                 buttonDeclineFriendRequest.setEnabled(false);
 
                 friendRequestDB.child(currentUser.getUid()).child(userId).removeValue()
@@ -137,7 +172,9 @@ public class ProfileActivity extends AppCompatActivity {
                                             }
                                         });
 
+                                pd.dismiss();
                             }
+
                         });
             }
         });
@@ -223,6 +260,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
+                pd.setTitle("Operation in progress");
+                pd.setMessage("Please wait");
+                pd.show();
+
                 buttonFriendRequest.setEnabled(false);
 
                 //------------- NOT FRIENDS STATE
@@ -267,6 +309,7 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             buttonFriendRequest.setEnabled(true);
+                            pd.dismiss();
 
                         }
                     });
@@ -294,7 +337,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                         }
                                     });
-
+                            pd.dismiss();
                         }
                     });
 
@@ -343,6 +386,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                                 }
                                             });
+                                    pd.dismiss();
 
                                 }
                             });
@@ -372,7 +416,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                                 }
                                             });
-
+                                    pd.dismiss();
                                 }
                             });
 

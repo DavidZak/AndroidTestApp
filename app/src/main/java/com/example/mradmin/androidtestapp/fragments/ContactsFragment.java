@@ -26,6 +26,7 @@ import com.example.mradmin.androidtestapp.entities.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -50,6 +51,7 @@ public class ContactsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
         userDB = ((FirebaseApplication) getActivity().getApplication()).getFirebaseDatabase();
+        userDB.keepSynced(true);
 
         listView = (RecyclerView) rootView.findViewById(R.id.contactsListView);
         listView.setHasFixedSize(true);
@@ -128,7 +130,7 @@ public class ContactsFragment extends Fragment {
 
             CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.imageViewContactImage);
 
-            Picasso.with(context).load(image).placeholder(R.mipmap.ic_launcher).into(userImageView);
+            Picasso.with(context).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.mipmap.ic_launcher).into(userImageView);
 
         }
     }
